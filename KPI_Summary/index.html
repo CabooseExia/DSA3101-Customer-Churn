@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <script src=jquery-ui.min.js></script>
+<head>
+    <!-- font Inter for the header -->
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
+    
+    <!-- css styles for the entire page -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <!-- GXSChurn Logo -->
+    <link rel="preload" as="image" href="GXSChurn.png">
+</head>
+<body>
+    <!-- Header tab (can change the active depending on your tab) -->
+    <header>
+        <div class="logo">
+            <img src="GXSChurn.png" alt="GXSChurn logo">
+        </div>
+        <nav>
+            <ul class="nav-tabs">
+                <li><a href="#" class="active">KPI Summary</a></li>
+                <li><a href="#">Transactional Analysis</a></li>
+                <li><a href="#">Customer Demographics</a></li>
+            </ul>
+        </nav>
+    </header>
+<!-- need to figure out how to utilize the custom range datepicker -->
+    <select name="time">
+        <option value="placeholder"disabled selected> Time </option>
+        <option value="past-six-months">Past 6 Months </option>
+        <option value="past-one-year">Past 1 Year </option>
+        <option value="custom-range">Custom Range</option>
+    </select>
+    <input type="date" id="custom-range"> 
+<!-- Figure out the css styling for these div div divs -->
+    <div class="container">
+        <div class="item">
+            <h2 class= "text"> Historical Churn Rate</h2>
+            <h2 class= "number">40.0%</h2>
+        </div>
+        <div class="item">
+            <h2 class= "text"> Persona Segmentation</h2>
+            <h3 class= "persona-text"> Price-Sensitive </h3>
+            <h3 class= "persona-number"> 40.0% </h3>
+            <h3 class= "persona-text"> Support-Dependent </h3>
+            <h3 class= "persona-number"> 35.0% </h3>
+            <h3 class= "persona-text"> Feature-Driven </h3>
+            <h3 class= "persona-number"> 25.0% </h3>
+        </div>
+        <div class="item">
+            <h2 class= "text"> Projected Churn Rate</h2>
+            <h2 class= "number">15.0%</h2>
+        </div>
+    </div>
+<!-- Figure out how to connect the graphs using dummy data -->
+</body>
+</html>
