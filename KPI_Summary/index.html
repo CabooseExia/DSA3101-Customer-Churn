@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-    <script src=jquery-ui.min.js></script>
 <head>
     <!-- font Inter for the header -->
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
@@ -10,6 +9,15 @@
 
     <!-- GXSChurn Logo -->
     <link rel="preload" as="image" href="GXSChurn.png">
+
+    <!-- Datepicker CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="script.js"></script>
+
+    <!-- For the Filter Logo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <!-- Header tab (can change the active depending on your tab) -->
@@ -26,13 +34,23 @@
         </nav>
     </header>
 <!-- need to figure out how to utilize the custom range datepicker -->
-    <select name="time">
-        <option value="placeholder"disabled selected> Time </option>
-        <option value="past-six-months">Past 6 Months </option>
-        <option value="past-one-year">Past 1 Year </option>
-        <option value="custom-range">Custom Range</option>
-    </select>
-    <input type="date" id="custom-range"> 
+    <div class="dropdown-filter-container">
+        <div class="dropdown">
+            <button class="dropbtn"> Time <i class="fas fa-filter"></i></button>
+            <div class="dropdown-content">
+                <a href="#" id="past-six-month">Past 6 Months</a>
+                <a href="#" id="past-one-year">Past 1 Year</a>
+                <div class="datepicker-container">
+                        <input type="text" id="start-date" placeholder="Select start date">
+                        <label for="end-date">-</label>
+                        <input type="text" id="end-date" placeholder="Select end date">
+                        <button id="filter-button">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 <!-- Figure out the css styling for these div div divs -->
     <div class="container">
         <div class="item">
