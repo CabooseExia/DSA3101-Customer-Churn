@@ -2,6 +2,18 @@
   margin:0;
   padding:0;
 }
+
+html{
+  height:100%;
+}
+body {
+  background: linear-gradient(0deg, rgb(255,255,255),rgba(153, 153, 153,0.3), rgb(255,255,255) );
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 header {
   display: flex;
   align-items: center; /* Align items vertically */
@@ -10,15 +22,18 @@ header {
 }
 .logo {
   margin-right: 150px; /* Adjust margin as needed */
+  background-color: transparent;
 }
 .nav-tabs {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  background-color: transparent;
 }
 
 .nav-tabs li {
   display: inline-block;
+  background-color: transparent;
 }
 
 .nav-tabs a {
@@ -28,6 +43,7 @@ header {
   font-family: 'Inter';
   font-weight: bold;
   font-size: 20px;
+  background-color: transparent;
   color: #ffffff; /* Adjust color as needed */
   border-radius: 15px; /* Adjust border radius as needed */
   margin-right: 15px; /* Adjust spacing between tabs */
@@ -47,6 +63,7 @@ header {
   display: flex;
   margin: 20px 20px;
   align-items: center;
+  background-color: transparent;
 }
 
 .dropdown {
@@ -58,6 +75,9 @@ header {
   cursor: pointer;
   font-size: 16px;
   font-family: 'Inter';
+  border:0px;
+  border-radius: 10px;
+  background-color: white;
 }
 
 .filter-btn i {
@@ -79,6 +99,7 @@ header {
   font-family: 'Inter';
   text-decoration: none;
   display: block;
+  
 }
 
 .dropdown-content a:hover {
@@ -110,4 +131,82 @@ input[type="text"] {
   border: 2px solid #ccc;
   border-radius: 4px;
   width: 70px;
+  border: 0.5px outset #656262;
+}
+
+.container{
+  list-style-type: none;
+  margin: 10px 100px;
+  padding: 0;
+  display: inline-flex;
+  background-color: transparent;
+}
+
+.item{
+  display: block;
+  margin: 30px 30px;
+  padding: 30px 30px 30px 30px ; /* Adjust padding as needed */
+  text-decoration: none;
+  height:fit-content;
+  float: left;
+  border: 0.5px outset #656262;
+  font-family: 'Inter';
+  font-weight: bold;
+  font-size: 13px;
+  color: #000000; /* Adjust color as needed */
+  border: 0px;
+  border-radius: 100px; /* Adjust border radius as needed */
+  margin-right: 30px; /* Adjust spacing between tabs */
+  background-color: white;
+  text-align: center;
+  line-height:normal;
+}
+.number{
+  color: rgb(159, 6, 6);
+  font-weight: bolder;
+  font-size: 60px;
+}
+.persona{
+  display: block;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 30px 30px 30px 30px ; /* Adjust padding as needed */
+  text-decoration: none;
+  float: left;
+  width: 600px;
+  height:fit-content;
+  border: 0px;
+  font-family: 'Inter';
+  font-weight: bold;
+  font-size: 20px;
+  color: #000000; /* Adjust color as needed */
+  border-radius: 100px; /* Adjust border radius as needed */
+  margin-right: 30px; /* Adjust spacing between tabs */
+  background-color: white;
+  text-align: center;
+}
+.persona-each{
+  list-style-type: none;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right:20px;
+  padding: 0;
+  display: inline-flex;
+}
+.each{
+  padding: 20px 20px;
+  margin-left: 15px;
+  margin-right: 15px;
+  border:0px;
+  background: linear-gradient(0deg, rgb(255,255,255),rgba(153, 153, 153,0.3), rgb(255,255,255) );
+  border-radius: 100px;
+  font-size: 15px;
+  text-align: center;
+}
+.persona-number{
+  margin-bottom: 10px;
+  color: rgb(159, 6, 6);
+  font-weight: bolder;
+  font-size: 40px;
+  text-align: center;
 }
