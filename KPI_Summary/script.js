@@ -47,4 +47,30 @@ $(document).ready(function() {
         console.log('Selected date range:', startDate, 'to', endDate);
       // Add your filtering logic here
     });
-  });
+
+    $.getJSON('http://127.0.0.1:5000/api/data', function(data) {
+        // Process data for visualization
+        const dates = data.map(entry => entry.date);
+        const values = data.map(entry => entry.value);
+
+        // Plot data using Plotly
+        const trace = {
+            x: dates,
+            y: values,
+            type: 'scatter'
+        };
+        const layout = {
+            title: 'Data Visualization',
+            xaxis: {
+                title: 'Date'
+            },
+            yaxis: {
+                title: 'Value'
+            }
+        };
+        Plotly.newPlot('graph', [trace], layout);
+    })
+    .fail(function(error) {
+        console.error('Error fetching data:', error);
+    });
+});
