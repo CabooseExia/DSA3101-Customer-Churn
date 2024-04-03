@@ -14,26 +14,28 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="script.js"></script>
 
     <!-- For the Filter Logo -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
     <!-- Plotly JS  -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
     <!-- Header tab (can change the active depending on your tab) -->
     <header>
-        <div class="logo">
-            <img src="GXSChurn.png" alt="GXSChurn logo">
-        </div>
-        <nav>
-            <ul class="nav-tabs">
-                <li><a href="#" class="active">KPI Summary</a></li>
-                <li><a href="#">Transactional Analysis</a></li>
-                <li><a href="#">Customer Demographics</a></li>
-            </ul>
+        <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
+            <div class="container-fluid">
+                <img src="GXSChurn.png" alt="GXSChurn logo">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+                    <li class="nav-item mx-3"><a href="#" class="nav-link active px-5">KPI Summary</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-5">Transactional Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-5">Customer Demographics</a></li>
+                </ul>
+            </div> 
         </nav>
     </header>
 <!-- need to figure out how to utilize the custom range datepicker -->
@@ -83,8 +85,11 @@
         </div>
     </div>
 <!-- Figure out how to connect the graphs using dummy data -->
-    <div id="graph">
+    <div class="graph-container">
+        <gr id="graph"></gr>
+        <gr id="graph2"></gr>
     </div>
-
+    
+    <script src="script.js"></script>
 </body>
 </html>
