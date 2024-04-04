@@ -34,53 +34,6 @@ body {
   color: #000000 !important;
 }
 
-.dropdown-filter-container {
-  display: flex;
-  margin: 20px 20px;
-  align-items: center;
-  background-color: transparent;
-}
-
-.dropdown {
-  position: relative;
-}
-
-.dropbtn {
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  font-family: 'Inter';
-  border:0px;
-  border-radius: 10px;
-  background-color: white;
-}
-
-.filter-btn i {
-  margin-right: 5px;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  font-family: 'Inter';
-  text-decoration: none;
-  display: block;
-  
-}
-
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-
 #filter-button {
   padding: 8px 16px;
   margin-left: 10px;
@@ -91,127 +44,51 @@ body {
   cursor: pointer;
 }
 
-.datepicker-container {
-  display: flex;
-  align-items: center;
-  padding: 2px 16px;
-}
-
-label {
-  margin: 2px 2px ;
-}
-
-input[type="text"] {
-  padding: 12px  ;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  width: 70px;
-  border: 0.5px outset #656262;
-}
-
-.container{
-  list-style-type: none;
-  margin: 0px 100px;
-  padding: 0;
-  display: inline-flex;
-  background-color: transparent;
-}
-
-.item{
-  display: block;
-  margin: 30px 30px;
-  padding: 30px 30px 30px 30px ; /* Adjust padding as needed */
-  text-decoration: none;
-  height:fit-content;
-  float: left;
-  border: 0.5px outset #656262;
-  font-family: 'Inter';
-  font-weight: bold;
-  font-size: 13px;
-  color: #000000; /* Adjust color as needed */
-  border: 0px;
-  border-radius: 100px; /* Adjust border radius as needed */
-  margin-right: 30px; /* Adjust spacing between tabs */
-  background-color: white;
-  text-align: center;
-  line-height:normal;
-}
 .number{
   color: rgb(159, 6, 6);
   font-weight: bolder;
-  font-size: 60px;
+  font-size: 4vw;
 }
-.persona{
-  display: block;
-  margin-left: 15px;
-  margin-right: 15px;
-  padding: 30px 30px 30px 30px ; /* Adjust padding as needed */
-  text-decoration: none;
-  float: left;
-  width: 600px;
-  height:fit-content;
-  border: 0px;
+.w-custom{
+  width:20%;
+}
+.w-custom-large{
+  width:40%;
+}
+.card{
+  border-radius: 1.25vw !important;
+}
+.card-title{
+  font-family: 'Inter';
+  color: grey;
+  font-size: 1vw;
+}
+.time{
+  color:grey;
+  font-size: 0.85vw;
+}
+.maroon{
+  color:#9f0606;
+}
+.persona-text{
   font-family: 'Inter';
   font-weight: bold;
-  font-size: 20px;
-  color: #000000; /* Adjust color as needed */
-  border-radius: 100px; /* Adjust border radius as needed */
-  margin-right: 30px; /* Adjust spacing between tabs */
-  background-color: white;
-  text-align: center;
-}
-.persona-each{
-  list-style-type: none;
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-right:20px;
-  padding: 0;
-  display: inline-flex;
-}
-.each{
-  padding: 20px 20px;
-  margin-left: 15px;
-  margin-right: 15px;
-  border:0px;
-  background: linear-gradient(0deg, rgb(255,255,255),rgba(153, 153, 153,0.3), rgb(255,255,255) );
-  border-radius: 100px;
-  font-size: 15px;
-  text-align: center;
+  font-size: 1vw;
+  text-align:center;
 }
 .persona-number{
-  margin-bottom: 10px;
-  color: rgb(159, 6, 6);
+  color: black;
   font-weight: bolder;
-  font-size: 40px;
+  font-size: 3vw;
   text-align: center;
 }
 
-.graph-container{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: inline-flex;
-  background-color: transparent;
+.churn{
+  display:flex;
+  flex-direction:column;
 }
 
-.graph-container gr{
-  display: block;
-  margin: 30px 30px;
-  padding: 10px 30px 10px 30px ; /* Adjust padding as needed */
-  text-decoration: none;
-  height:fit-content;
-  width: fit-content;
-  float: left;
-  border: 0.5px outset #656262;
-  font-family: 'Inter';
-  font-weight: bold;
-  font-size: 13px;
-  color: #000000; /* Adjust color as needed */
-  border: 0px;
-  border-radius: 100px; /* Adjust border radius as needed */
-  margin-right: 30px; /* Adjust spacing between tabs */
-  background-color: white;
-  text-align: center;
-  line-height:normal;
-
+.graph-content{
+  width:100%;
+  height:100%;
 }

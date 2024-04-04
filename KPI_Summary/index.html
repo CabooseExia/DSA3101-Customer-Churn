@@ -15,7 +15,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-    <!-- For the Filter Logo -->
+    <!-- For the Font Awesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     
     <!-- Plotly JS  -->
@@ -23,6 +23,8 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </head>
 <body>
     <!-- Header tab (can change the active depending on your tab) -->
@@ -39,57 +41,158 @@
         </nav>
     </header>
 <!-- need to figure out how to utilize the custom range datepicker -->
-    <div class="dropdown-filter-container">
-        <div class="dropdown">
-            <button class="dropbtn"> Time <i class="fas fa-filter"></i></button>
-            <div class="dropdown-content">
-                <a href="#" id="past-six-month">Past 6 Months</a>
-                <a href="#" id="past-one-year">Past 1 Year</a>
-                <div class="datepicker-container">
-                        <input type="text" id="start-date" placeholder="Start date">
-                        <label for="end-date">-</label>
-                        <input type="text" id="end-date" placeholder="End date">
-                        <button id="filter-button">Apply</button>
+<div class="d-inline">
+    <div class="dropdown mt-3 mx-5">
+        <button  class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> 
+            Time 
+            <i class="fas fa-filter"></i>
+        </button>
+            <ul class="dropdown-menu" aria_labelledby="dropdownMenuButton1">
+                <li><a href="#" class="dropdown-item" id="past-six-month">Past 6 Months</a></li>
+                <li><a href="#" class="dropdown-item" id="past-one-year">Past 1 Year</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <div class="datepicker-container mx-3">
+                    <input class="px-2" type="text" id="start-date" placeholder="Start date">
+                    <label for="end-date">-</label>
+                    <input class="px-2" type="text" id="end-date" placeholder="End date">
+                    <button id="filter-button">Apply</button>
+            </div>
+        </ul>
+    </div>
+</div>
+<!-- Figure out the css styling for these div div divs -->
+<div class="container my-4">
+    <div class="row">
+      <div class="col mb-3">
+        <div class="card h-100">
+          <div class="card-body churn">
+            <h5 class="card-title">Historical Churn Rate</h5>
+            <h2 href="#" class= "number text-center mt-auto" id="hist_churn">40.0%<h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-7 mb-3">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Persona Segmentation</h5>
+            <div class="container">
+                <div class="row">
+                    <div class="col d-flex">
+                        <div class= "card border-0">
+                            <div class="card-body">
+                                <h3 href="#" class= "persona-text text-center"> Price-Sensitive </h3>
+                                <h3 href="#"class= "persona-number text-center"> 40.0% </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class= "card border-0">
+                            <div class="card-body">
+                                <h3 href="#"class= "persona-text text-center"> Support-Dependent </h3>
+                                <h3 href="#"class= "persona-number text-center"> 35.0% </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class= "card border-0">
+                            <div class="card-body">   
+                                <h3 href="#"class= "persona-text text-center"> Feature-Driven </h3>
+                                <h3 href="#"class= "persona-number text-center"> 25.0% </h3> 
+                            </div>
+                        </div>     
+                    </div>
+                </div>   
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col mb-3">
+        <div class="card h-100">
+          <div class="card-body churn">
+            <div class="d-flex justify-content-between">
+                <h5 class="card-title">Projected Churn Rate </h5>
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa fa-info-circle aria-hidden=true"></i></button>
+                <!-- Modal Popup -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body mt-auto">
+                                <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="mb-3">
+                                    <h4 class="mb-3"> Model Deployed:</h4>
+                                    <h5 class="maroon"> <i class="fa fa-arrow-right"></i> Random Forest </h5>
+                                    <h5 class="maroon"> <i class="fa fa-arrow-right"></i> Convolutional Neural Networks (CNN) </h5>
+                                </div>
+                                <div>
+                                    <h4 class="mt-5 mb-3"> Classification Report:</h4>
+                                    <table id="myTable" class="table table-bordered-sm">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col" class="maroon">Metrics</th>
+                                            <th scope="col" class="maroon text-center">Positive</th>
+                                            <th scope="col" class="maroon text-center">Negative</th>
+                                            <th scope="col" class="maroon text-center">Average</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th scope="row" class="maroon">Accuracy</th>
+                                            <td class="text-center" id="accuracy-positive"></td>
+                                            <td class="text-center" id="accuracy-negative"></td>
+                                            <td class="text-center" id="accuracy-average"></td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row" class="maroon">Precision</th>
+                                            <td class="text-center" id="precision-positive"></td>
+                                            <td class="text-center" id="precision-negative"></td>
+                                            <td class="text-center" id="precision-average"></td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row" class="maroon">Recall</th>
+                                            <td class="text-center" id="recall-positive"></td>
+                                            <td class="text-center" id="recall-negative"></td>
+                                            <td class="text-center" id="recall-average"></td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row" class="maroon">F1</th>
+                                            <td class="text-center" id="f1-positive"></td>
+                                            <td class="text-center" id="f1-negative"></td>
+                                            <td class="text-center" id="f1-average"></td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <button type="button" class="btn btn-secondary float-end my-2" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2 href="#" class= "number text-center mt-4" id="hist_churn">15.0%</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Figure out how to connect the graphs using dummy data -->
+<div class="container my-4">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body my-0 py-0 mb-0">
+                    <div class="graph-content" id="graph"></div>
                 </div>
             </div>
         </div>
-    </div>
-
-
-<!-- Figure out the css styling for these div div divs -->
-    <div class="container">
-        <div class="item">
-            <h2 class= "text"> Historical Churn Rate</h2>
-            <h2 href="#" class= "number">40.0%</h2>
-        </div>
-        <div class="persona">
-            <h2 class= "text"> Persona Segmentation</h2>
-            <div class= "persona-each">
-                <div class="each">
-                    <h3 href="#" class= "persona-text"> Price-Sensitive </h3>
-                    <h3 href="#"class= "persona-number"> 40.0% </h3>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body my-0 py-0 mb-0">
+                    <div class="graph-content" id="graph2"></div>
                 </div>
-                <div class="each">
-                    <h3 href="#"class= "persona-text"> Support-Dependent </h3>
-                    <h3 href="#"class= "persona-number"> 35.0% </h3>
-                </div>
-                <div class="each">
-                    <h3 href="#"class= "persona-text"> Feature-Driven </h3>
-                    <h3 href="#"class= "persona-number"> 25.0% </h3> 
-                </div>
-            </div>         
+            </div>
         </div>
-        <div class="item">
-            <h2 class= "text"> Projected Churn Rate</h2>
-            <h2 class= "number">15.0%</h2>
-        </div>
-    </div>
-<!-- Figure out how to connect the graphs using dummy data -->
-    <div class="graph-container">
-        <gr id="graph"></gr>
-        <gr id="graph2"></gr>
-    </div>
-    
-    <script src="script.js"></script>
+    </div>    
+</div>
+<script src="script.js"></script>
 </body>
 </html>
