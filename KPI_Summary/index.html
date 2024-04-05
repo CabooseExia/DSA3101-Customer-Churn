@@ -21,6 +21,9 @@
     <!-- Plotly JS  -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
+    <!-- Dataframe-JS -->
+    <script src="https://cdn.jsdelivr.net/npm/dataframe-js@latest/dist/dataframe.min.js"></script>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -67,7 +70,7 @@
         <div class="card h-100">
           <div class="card-body churn">
             <h5 class="card-title">Historical Churn Rate</h5>
-            <h2 href="#" class= "number text-center mt-auto" id="hist_churn">40.0%<h2>
+            <h2 class= "number text-center mt-auto" id="hist-churn"><h2>
           </div>
         </div>
       </div>
@@ -80,24 +83,24 @@
                     <div class="col d-flex">
                         <div class= "card border-0">
                             <div class="card-body">
-                                <h3 href="#" class= "persona-text text-center"> Price-Sensitive </h3>
-                                <h3 href="#"class= "persona-number text-center"> 40.0% </h3>
+                                <h3 href="#" id="first-persona" class= "persona-text text-center"> </h3>
+                                <h3 href="#" id="first-percent" class= "persona-number text-center"> </h3>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class= "card border-0">
                             <div class="card-body">
-                                <h3 href="#"class= "persona-text text-center"> Support-Dependent </h3>
-                                <h3 href="#"class= "persona-number text-center"> 35.0% </h3>
+                                <h3 href="#" id="second-persona" class= "persona-text text-center">  </h3>
+                                <h3 href="#" id="second-percent" class= "persona-number text-center">  </h3>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class= "card border-0">
                             <div class="card-body">   
-                                <h3 href="#"class= "persona-text text-center"> Feature-Driven </h3>
-                                <h3 href="#"class= "persona-number text-center"> 25.0% </h3> 
+                                <h3 href="#" id="third-persona" class= "persona-text text-center"> </h3>
+                                <h3 href="#" id="third-percent" class= "persona-number text-center"> </h3> 
                             </div>
                         </div>     
                     </div>
@@ -168,7 +171,7 @@
                     </div>
                 </div>
             </div>
-            <h2 href="#" class= "number text-center mt-4" id="hist_churn">15.0%</h2>
+            <h2 href="#" class= "number text-center mt-4" id="proj-churn"></h2>
           </div>
         </div>
       </div>

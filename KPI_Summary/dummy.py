@@ -8,9 +8,9 @@ CORS(app)
 def get_data():
     # Your code to fetch and process data from the desired source
     # For simplicity, let's assume dummy data
-    data = [{'date': '2024-01-01', 'value': 10, 'account': 25},
-            {'date': '2024-01-02', 'value': 20, 'account':50},
-            {'date': '2024-01-03', 'value': 15, 'account':60}]
+    data = [{'date': '2024-01-01', 'value': 10, 'account': 25, 'churn': 1,'persona': 'Price-Sensitive','churn_predict': None},
+            {'date': '2024-01-02', 'value': 20, 'account':50, 'churn': 0,'persona': 'Support-Dependent', 'churn_predict': 1},
+            {'date': '2024-01-03', 'value': 15, 'account':60, 'churn': 0,'persona': 'Feature-Driven', 'churn_predict': 0}]
     return jsonify(data)
 
 @app.route('/api/model')
