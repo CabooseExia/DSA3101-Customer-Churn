@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from flask_cors import CORS
+from flask_cors import CORS 
 
 app = Flask(__name__)
 CORS(app)
@@ -22,5 +22,7 @@ def get_model():
              ,'recall':{'positive': '61%', 'negative':'72%','average':'65%'}
              ,'f1':{'positive': '61%', 'negative':'72%','average':'65%'}}]
     return jsonify(model_perform)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(host='0.0.0.0', port =5000, debug=True) #use this for Docker run instead
+    app.run(debug=True) # only for local run 
