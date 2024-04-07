@@ -140,7 +140,6 @@ $(document).ready(function() {
 
         // Process data for visualization
         const dates = df.select('date').toArray().flat();
-        const values = df.select('value').toArray().flat();
         const account =df.select('account').toArray().flat();
 
         const projected = df.select('churn_predict').toArray().flat();
@@ -166,7 +165,7 @@ $(document).ready(function() {
         // Plot data using Plotly
         const trace = {
             x: dates,
-            y: values,
+            y: churn,
             type: 'scatter',
             mode:'lines+markers',
             line: {color: 'rgb(159,6,6)'}
@@ -330,6 +329,7 @@ $(document).ready(function() {
 
     $.getJSON('http://127.0.0.1:5000/api/data', function(data) {
         rawDf = new DataFrame(data);
+        console.log(rawDf.show())
         updateData(rawDf);
     })
     $.getJSON('http://127.0.0.1:5000/api/model', function(data) {
