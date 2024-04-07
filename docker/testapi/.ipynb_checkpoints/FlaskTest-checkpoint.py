@@ -9,7 +9,7 @@ def test():
     df = pd.DataFrame(date, columns=['Date'])
     df['x'] = x
     df['y'] = y
-    return df
+    return df.to_dict()
 
 app = Flask(name)
 CORS(app)
