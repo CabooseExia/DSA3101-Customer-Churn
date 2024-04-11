@@ -17,3 +17,15 @@ if __name__ == '__main__':
 
     # Close the connection
     conn.close()
+
+    # # Reconnect to the SQLite database
+    # conn = sqlite3.connect('theyre_taking_the_data_to_isengard.db')
+
+    # # Query the database using pandas
+    # query_result = pd.read_sql_query('SELECT * FROM main_table', conn)
+
+    # # Close the connection
+    # conn.close()
+
+    # # Display the query result
+    # print(query_result.head())
