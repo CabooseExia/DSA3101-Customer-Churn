@@ -26,6 +26,19 @@ test:
     depends_on:
       - rabbitmq
 
+database:
+    hostname: database
+    container_name: database
+    build:
+      context: /docker/Databse
+      dockerfile: Dockerfile
+    ports:
+      - ${FILE_Port}:0001
+    networks:
+      - bridge-net
+    depends_on:
+      - rabbitmq
+
 networks:
   bridge-net:
     name: bridge_network
