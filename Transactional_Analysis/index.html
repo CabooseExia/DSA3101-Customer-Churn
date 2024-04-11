@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GxSmartChurn Dashboard</title>
+
+  <!-- font Inter for the header -->
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
+  
+  <!-- css styles for the entire page -->
+  <link rel="stylesheet" type="text/css" href="styles.css">
+
+  <!-- GXSChurn Logo -->
+  <link rel="preload" as="image" href="GXSChurn.png">
+
+  <!-- Datepicker CSS -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+  <!-- For the Font Awesome Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <!-- Plotly JS  -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <!-- Header tab (can change the active depending on your tab) -->
+    <header>
+        <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
+            <div class="container-fluid">
+                <img src="GXSChurn.png" alt="GXSChurn logo">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">KPI Summary</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link active px-4">Transactional Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Persona Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Feature Analysis</a></li>
+                </ul>
+            </div> 
+        </nav>
+    </header>
+
+    <div class="filter">
+        <label for="persona">Persona:</label>
+        <div class="dropdown">
+          <div class="select-box" onclick="toggleDropdown()">
+            <span class="selected-items">Select options</span>
+            <div class="arrow"></div>
+          </div>
+          <div class="options-container">
+            <div class="option">
+              <input type="checkbox" id="Price-Sensitive" name="persona" value="Price-Sensitive" onchange="updateSelectedOptions()">
+              <label for="Price-Sensitive">Price-Sensitive</label>
+            </div>
+            <div class="option">
+              <input type="checkbox" id="Feature-Driven" name="persona" value="Feature-Driven" onchange="updateSelectedOptions()">
+              <label for="Feature-Driven">Feature-Driven</label>
+            </div>
+            <div class="option">
+              <input type="checkbox" id="Service-Dependent" name="persona" value="Service-Dependent" onchange="updateSelectedOptions()">
+              <label for="Service-Dependent">Service-Dependent</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<h2 class="chart-title">Lifecycles and Churn Probabilities based on Persona</h2>
+
+<div class="main-content">
+  <div id="lifecycleDistribution" class="chart-container">
+      <!-- Plotly will insert the lifecycle distribution chart here -->
+  </div>
+
+  <div id="churnProbability" class="chart-container">
+      <!-- Plotly will insert the churn probability chart here -->
+  </div>
+</div>
+
+<script src="scripts.js"></script>
+</body>
+</html>
+
