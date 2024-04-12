@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GxSmartChurn Persona Analysis</title>
+    
+    <!-- Font Inter for the header -->
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <!-- CSS styles for the entire page -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- GXSChurn Logo -->
+    <link rel="preload" as="image" href="{{ url_for('static', filename='GXSChurn.png') }}">
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
+
+    <!-- Header tab -->
+    <header>
+        <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
+            <div class="container-fluid">
+                <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="Churn Image">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">KPI Summary</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Transactional Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link active px-4">Customer Persona Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Features Analysis</a></li>
+                </ul>
+            </div> 
+        </nav>
+    </header>
+<!-- Filter Section -->
+<section class="filter-section">
+    <form action="api/handle-filters/customer-persona-analysis" method="post">
+        <!-- Demographic Filters -->
+        <div class="demographic-filters">
+            <h2>Demographic Filters:</h2>
+
+            <!-- Age Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Age</span>
+                <select multiple name="Age" class="filter-select">
+                    <option value="18-24">18-24</option>
+                    <option value="25-34">25-34</option>
+                    <option value="35-44">35-44</option>
+                    <option value="45-54">45-54</option>
+                    <option value="55-64">55-64</option>
+                    <option value="65-INF">65+</option>
+                </select>
+            </div>
+            
+            <!-- Gender Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Gender</span>
+                <select multiple name="Gender" class="filter-select">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <!-- Marital Status Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Marital Status</span>
+                <select multiple name="Marital Status" class="filter-select">
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                    <option value="divorced">Divorced</option>
+                    <option value="widowed">Widowed</option>
+                </select>
+            </div>
+            
+            <!-- Number of Dependents Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Number of Dependents</span>
+                <select multiple name="Number of Dependents" class="filter-select">
+                    <option value="0-0">0</option>
+                    <option value="1-1">1</option>
+                    <option value="2-2">2</option>
+                    <option value="3-3">3</option>
+                    <option value="4-4">4</option>
+                    <option value="5-INF">5+</option>
+                </select>
+            </div>
+            
+            <!-- Employment Status Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Employment Status</span>
+                <select multiple name="Employment Status" class="filter-select">
+                    <option value="employed">Employed</option>
+                    <option value="unemployed">Unemployed</option>
+                    <option value="self employed">Self-employed</option>
+                    <option value="student">Student</option>
+                    <option value="retired">Retired</option>
+                </select>
+            </div>
+            
+            <!-- Income Source Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Income Source</span>
+                <select multiple name="Income Source" class="filter-select">
+                    <option value="wages">Wages</option>
+                    <option value="salary">Salary</option>
+                    <option value="investments">Investments</option>
+                    <option value="rental income">Rental Income</option>
+                    <option value="pension">Pension</option>
+                </select>
+            </div>
+            
+            <!-- Education Level Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Education Level</span>
+                <select multiple name="Education Level" class="filter-select">
+                    <option value="less than high school">Less Than High School</option>
+                    <option value="high school diploma">High School Diploma</option>
+                    <option value="some college">Some College</option>
+                    <option value="bachelor degree">Bachelor's Degree</option>
+                    <option value="graduate degree">Graduate Degree</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Behavioral/Financial Filters -->
+        <div class="behavioral-filters">
+            <h2>Behavioral/Financial Filters:</h2>
+            
+            <!-- Account Balance Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Account Balance</span>
+                <select multiple name="Account Balance" class="filter-select">
+                    <option value="0-999">Less Than $1000</option>
+                    <option value="1000-5000">$1000 to $5000</option>
+                    <option value="5001-10000">$5001 to $10000</option>
+                    <option value="10001-INF">More Than $10000</option>
+                </select>
+            </div>
+            
+            <!-- Credit Utilization Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Credit Utilization</span>
+                <select multiple name="Credit Utilization" class="filter-select">
+                    <option value="0-29">Less Than 30%</option>
+                    <option value="30-60">30% to 60%</option>
+                    <option value="60-90">60% to 90%</option>
+                    <option value="91-INF">More Than 90%</option>
+                </select>
+            </div>
+            
+            <!-- Number of Products Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Number of Products</span>
+                <select multiple name="Number of Products" class="filter-select">
+                    <option value="1-1">1</option>
+                    <option value="2-2">2</option>
+                    <option value="3-3">3</option>
+                    <option value="4-4">4</option>
+                    <option value="5-INF">5 or more</option>
+                </select>
+            </div>
+            
+            <!-- Tenure Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Tenure</span>
+                <select multiple name="Tenure" class="filter-select">
+                    <option value="0-11">Less Than 1 Year</option>
+                    <option value="12-36">1 to 3 Years</option>
+                    <option value="36-60">3 to 5 Years</option>
+                    <option value="61-INF">More Than 5 Years</option>
+                </select>
+            </div>
+            
+            <!-- Credit Card Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Credit Card</span>
+                <select multiple name="Credit Card" class="filter-select">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <!-- Active Member Status Filter-->
+            <div class="filter-container">
+                <span class="filter-name">Active Member Status</span>
+                <select multiple name="Active Member Status" class="filter-select">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+
+            <!--Months Inactive Filter-->
+            <div class="filter-container">
+                <span class="filter-name">Months Inactive</span>
+                <select multiple name="Months Inactive" class="filter-select">
+                    <option value="0-0">0</option>
+                    <option value="1-1">1</option>
+                    <option value="2-2">2</option>
+                    <option value="3-3">3</option>
+                    <option value="4-4">4</option>
+                    <option value="5-5">5</option>
+                    <option value="6-INF">6 Or More</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div class="advanced-filters">
+            <h2>Advanced Filters:</h2>
+            
+            <!-- Customer Satisfaction Surveys Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Customer Satisfaction Surveys</span>
+                <select multiple name="Customer Satisfaction Surveys" class="filter-select">
+                    <option value="very satisfied">Very Satisfied</option>
+                    <option value="satisfied">Satisfied</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="unsatisfied">Unsatisfied</option>
+                    <option value="very unsatisfied">Very Unsatisfied</option>
+                </select>
+            </div>
+            
+            <!-- Response to previous retention efforts Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Response to Previous Retention Efforts</span>
+                <select multiple name="Response to Previous Retention Efforts" class="filter-select">
+                    <option value="highly responsive">Highly Responsive</option>
+                    <option value="moderately responsive">Moderately Responsive</option>
+                    <option value="slightly responsive">Slightly Responsive</option>
+                    <option value="not responsive">Not Responsive</option>
+                </select>
+            </div>
+            
+            <!-- Channels used for transactions Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Channels Used for Transactions</span>
+                <select multiple name="Channels Used for Transactions" class="filter-select">
+                    <option value="online">Online</option>
+                    <option value="mobile">Mobile</option>
+                    <option value="in store">In Store</option>
+                    <option value="phone">Phone</option>
+                    <option value="mail order">Mail Order</option>
+                </select>
+            </div>
+            
+            <!-- Marketing offers accepted Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Marketing Offers Accepted</span>
+                <select multiple name="Marketing Offers Accepted" class="filter-select">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="sometimes">Sometimes</option>
+                </select>
+            </div>
+        
+        </div>
+        <input type="hidden" id="token-id" name="token-id"> <!--Generates a unique tokenID for form submit-->
+        <input type="submit" class="analyze-button" value="Analyze!">
+    
+    </form>
+    <!--button class="analyze-button" type="button">Analyze!</button-->
+</section>
+
+<script>
+    // Generate random token ID
+    var tokenId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    
+    // Set token ID as hidden value
+    document.getElementById("token-id").value = tokenId;
+    // Add spinner display on form submit
+    //document.querySelector('.filter-section form').addEventListener('submit', function(e) {
+        // Optional: Prevent default form submission if doing AJAX
+        // e.preventDefault();
+        
+        // Show spinner
+        //document.getElementById('spinner').classList.remove('hidden');
+        
+        // If not using AJAX, form will proceed to submit normally, and you should handle hiding the spinner on page load if necessary
+        // If using AJAX, add your fetch/ajax call here, and then hide the spinner in the .then or .finally callback
+    //});   
+</script>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

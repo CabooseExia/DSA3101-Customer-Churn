@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GxSmartChurn Dashboard</title>
+    <!-- Font Inter for the header -->
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <!-- CSS styles for the entire page -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- GXSChurn Logo -->
+    <link rel="preload" as="image" href="{{ url_for('static', filename='GXSChurn.png') }}">
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    
+    
+    <!-- Plotly.js CDN -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- Header tab -->
+    <header>
+        <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
+            <div class="container-fluid">
+                <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="Churn Image">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">KPI Summary</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Transactional Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link active px-4">Customer Persona Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Features Analysis</a></li>
+                </ul>
+            </div> 
+        </nav>
+    </header>
+
+    <!-- Spinner -->
+    <div id="spinner-bg" class="spinner-bg">
+        <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="GxSmartChurn logo">
+        <p>Running...</p>
+        <div id="spinner" class="spinner"></div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <!-- Top Panel Information -->
+        <div class="top-panels">
+            <div class="panel">
+                <h3>Most prominent persona(s)</h3>
+                <p>Feature-Driven</p>
+            </div>
+            <div class="panel">
+                <h3>Average NPS score</h3>
+                <p>0.75</p>
+            </div>
+            <div class="panel">
+                <h3>Happiness Index</h3>
+                <p>0.7</p>
+            </div>
+        </div>
+
+        <!-- Plotly Charts Section -->
+        <div class="plotly-charts">
+            <div class="chart" id="persona-chart"></div>
+            <div class="chart" id="nps-score-chart"></div>
+            <div class="chart" id="happiness-index-chart"></div>
+            <div class="chart" id="heatmap-plot"></div>
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <script>
+        function updateDashboardData() {
+            const token_id = "{{ token_id }}";
+            fetch(`/api/results/customer-persona-analysis?token_id=${encodeURIComponent(token_id)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data['error']) {
+                        document.querySelector('.dashboard-section').innerHTML = "<h1 class='result-error'>ERROR: "+data["error"]+"</h1>";
+                    } else {
+                        // Update the dashboard panels
+                        document.querySelector('.top-panels .panel:nth-child(1) p').innerText = data['Most Prominent Persona'];
+                        document.querySelector('.top-panels .panel:nth-child(2) p').innerText = data['Average NPS Score'];
+                        document.querySelector('.top-panels .panel:nth-child(3) p').innerText = data['Happiness Index'];
+
+                        // Assuming the 'Filtered Data' contains the array of customer data
+                        const customerData = data['Filtered Data'];
+                        const npsScores = customerData.map(customer => customer.NPS);
+                        let npsCounts = {};
+                        for (let i = 0; i <= 10; i++) {
+                            npsCounts[i] = 0; // Initialize each score's count to 0
+                        }
+
+
+                        // Iterate over the data to count each NPS score
+                        customerData.forEach(customer => {
+                            const score = customer.NPS;
+                            if (score in npsCounts) {
+                                npsCounts[score] += 1;
+                            }
+                        });
+                        // Prepare the data for Plotly
+                        const dataNPS = [{
+                            x: Object.keys(npsCounts),
+                            y: Object.values(npsCounts),
+                            type: 'bar',
+                            marker: {
+                                color: 'rgba(50, 171, 96, 0.7)',
+                                line: {
+                                    color: 'rgba(50, 171, 96, 1.0)',
+                                    width: 2
+                                }
+                            }
+                        }];
+                        const layoutNPS = {
+                            title: 'Customer NPS Scores Distribution',
+                            autosize: true,
+                            margin: { l: 50, r: 50, b: 100, t: 50, pad: 4 },
+                            xaxis: {
+                                title: 'NPS Score',
+                                tickmode: 'linear', // Ensure every score is represented
+                                dtick: 1, // Interval of one unit on the x-axis
+                                tickangle: -45,
+                                automargin: true
+                            },
+                            yaxis: {
+                                title: 'Count of Customers'
+                            },
+                            legend: {y: -1, x: 1, orientation: 'h'}
+                        };
+                        Plotly.newPlot('nps-score-chart', dataNPS, layoutNPS);
+
+                        // Aggregating data for persona distribution and churn likelihood
+                        let personaCounts = {};
+                        let churnScores = {};
+                        customerData.forEach(customer => {
+                            let persona = customer.Persona;
+                            let churnLikelihood = customer.ChurnLikelihood;
+
+                            //Count customers per persona
+                            if (personaCounts[persona]) {
+                                personaCounts[persona] += 1;
+                                churnScores[persona] += churnLikelihood;
+                            } else {
+                                personaCounts[persona] = 1;
+                                churnScores[persona] = churnLikelihood;
+                            }
+                        });
+
+                        // Calculating average churn likelihood per persona
+                        Object.keys(churnScores).forEach(persona => {
+                        churnScores[persona] = churnScores[persona] / personaCounts[persona];
+                        });
+
+                        // Preparing data for Plotly
+                        let barTrace = {
+                            x: Object.keys(personaCounts),
+                            y: Object.values(personaCounts),
+                            type: 'bar',
+                            name: 'Customer Count',
+                            marker: {
+                                color: 'blue' // Color for the bars
+                            }
+                        };
+
+                        let lineTrace = {
+                            x: Object.keys(churnScores),
+                            y: Object.values(churnScores),
+                            type: 'scatter', // Use scatter for line graphs in Plotly
+                            mode: 'lines+markers',
+                            name: 'Likelihood of Churn',
+                            yaxis: 'y2',
+                            line: {
+                                color : 'red'
+                            }
+                        };
+
+                        let layoutPersona = {
+                            title: 'Customer Counts and Likelihood of Churn by Persona',
+                            xaxis: { title: 'Persona', automargin : true},
+                            yaxis: { title: 'Customer Count', automargin : true },
+                            yaxis2: {
+                                title: 'Likelihood of Churn',
+                                overlaying: 'y', // Overlay on the primary y-axis
+                                side: 'right', // Position on the right side
+                                automargin: true
+                            },
+                            barmode: 'group',
+                            autosize: true,
+                            margin: { l: 50, r: 50, b: 50, t: 100, pad: 4 },
+                            legend: {
+                                orientation: 'h',
+                                x: 0.5,
+                                xanchor: 'center',
+                                y: -0.5,
+                                yanchor: 'top'
+                            },
+                            font: { size: 12 }
+                        };
+                        Plotly.newPlot('persona-chart', [barTrace, lineTrace], layoutPersona);
+
+                        // Counting happy / not happy customers
+                        const happinessScore = customerData.map(customer => customer.Happiness);
+                        let happinessCount = { 'Happy': 0, 'Not Happy': 0 };
+                        happinessScore.forEach(score => {
+                        if (score) {
+                            happinessCount['Happy'] += 1;
+                        } else {
+                            happinessCount['Not Happy'] += 1;
+                        }
+                    });
+                        var trace = {
+                            labels: Object.keys(happinessCount),
+                            values: Object.values(happinessCount),
+                            type: 'pie',  // Change to 'pie' for a pie chart, or keep 'donut' for a donut chart
+                            marker: {
+                                colors: ['green', 'red']  // Custom colors for happy and not happy
+                            },
+                            textinfo: "label+percent",
+                            insidetextorientation: "radial"
+                        };
+                        var happinesslayout = {
+                            title: 'Distribution of Customer Happiness',
+                            autosize: true,
+                            margin: { l: 30, r: 30, b: 30, t: 100, pad: 4 },
+                            legend: {
+                            orientation: 'h',
+                            x: 0.5,
+                            xanchor: 'center',
+                            y: -0.1,
+                            yanchor: 'top'
+                        },
+                        font: { size: 12 }
+                        };
+
+                        Plotly.newPlot('happiness-index-chart', [trace], happinesslayout);
+
+                        const traceHeatmap = {
+                            x: customerData.map(customer => customer.NPS),
+                            y: customerData.map(customer => customer.ChurnLikelihood),
+                            z: customerData.map(customer => customer.Count),
+                            type: 'histogram2d',
+                            colorscale: 'RdYlGn',
+                            xbins: {
+                                start: 0,  // Start of bins on the x-axis
+                                end: 11,   // End of bins on the x-axis
+                                size: 1    // Size of bins (intervals) on the x-axis
+                            },
+                            ybins: {
+                                start: 0,  // Start of bins on the y-axis
+                                end: 1,    // End of bins on the y-axis
+                                size: 0.2  // Size of bins (intervals) on the y-axis
+                            },
+                            hovertemplate: 
+                                'NPS: %{x}<br>' +
+                                'CL: %{y}<br>' +
+                                'Customers: %{z}<extra></extra>',
+                            
+                            reversescale: false,
+                        };
+
+                        const layoutHeatmap = {
+                            title: 'Density of NPS vs. Churn Likelihood',
+                            xaxis: {
+                                title: 'Net Promoter Score (NPS)',
+                                range: [0, 11], // Fixed range for x-axis
+                                tickmode: 'linear',
+                                dtick: 1,       // Spacing between tick marks on the x-axis
+                            },
+                            yaxis: {
+                                title: 'Likelihood of Churn',
+                                range: [0, 1],  // Fixed range for y-axis
+                                tickmode: 'linear',
+                                dtick: 0.1      // Spacing between tick marks on the y-axis
+                            },
+                            colorbar: {
+                                title: 'Number of Customers'
+                            }
+                        };
+
+                        Plotly.newPlot('heatmap-plot', [traceHeatmap], layoutHeatmap);
+
+                    }
+
+                    // Hide spinner after data is loaded
+                    document.getElementById("spinner-bg").style.opacity = "0";
+
+                    setTimeout(() => {
+                        // Code to be executed after 0.5 seconds
+                        document.getElementById("spinner-bg").remove();
+                    }, 500);
+                })
+                .catch(error => console.error('Error fetching dashboard data:', error));
+        }
+        window.onload = function() {
+            updateDashboardData(); // Call the function to update the dashboard data when the page loads
+        };
+    </script>
+</body>
+</html>
