@@ -14,21 +14,38 @@ $(document).ready(function() {
         // Assuming your JSON data is in the format of dictionary of dictionaries
         // Iterate over the outer dictionary
         for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                var innerData = data[key];
-                for (var each in innerData){
-                    if (innerData.hasOwnProperty(each)){
-                        var cell = innerData[each];
-                        let string =each;
-                        for (var indiv in cell){
-                            if (cell.hasOwnProperty(indiv)){
-                                var final = cell[indiv];
-                                let id =string.concat("-",indiv);
-                                document.getElementById(id).innerHTML = final;
-                            }
-                        }
-                    }
+            console.log(key); //debugging
+            if (key == 'weighted avg'){
+                continue;
+            }
+            else if (key == 'accuracy'){
+                document.getElementById(key.concat("-","average")).innerHTML = (data[key]*100).toFixed(1) +'%';
+                continue;
+            }
+            let classify = "";
+            if (key == 0){
+                classify = 'positive';
+            }
+            else if (key == 1){
+                classify = 'negative'; 
+            }
+            else{
+                classify ='average';
+            }
+            var innerData = data[key];
+            console.log(innerData);
+            for (var each in innerData){
+                var cell = innerData[each];
+                if (each == 'support'){
+                    continue;
                 }
+                if (each =='f1-score'){
+                    document.getElementById('f1'.concat("-",classify)).innerHTML = (cell*100).toFixed(1) + '%';
+                }
+                else{
+                    document.getElementById(each.concat("-",classify)).innerHTML = (cell*100).toFixed(1) + '%';
+                }
+                
             }
         }
     }
