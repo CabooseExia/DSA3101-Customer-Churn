@@ -1,0 +1,112 @@
+[
+    [
+        {
+            "C": 1000,
+            "penalty": "l1",
+            "solver": "saga"
+        },
+        {
+            "C": 10,
+            "penalty": "l2",
+            "solver": "saga"
+        },
+        {
+            "C": 10,
+            "penalty": "l1",
+            "solver": "liblinear"
+        },
+        {
+            "C": 1,
+            "penalty": "l1",
+            "solver": "saga"
+        }
+    ],
+    [
+        {
+            "booster": "gbtree",
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "objective": "multi:softmax",
+            "eval_metric": "logloss",
+            "max_depth": 6,
+            "min_child_weight": 10,
+            "gamma": 0.1,
+            "subsample": 1.0,
+            "colsample_bytree": 0.8,
+            "lambda": null,
+            "alpha": null
+        },
+        {
+            "booster": "gbtree",
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "objective": "multi:softmax",
+            "eval_metric": "logloss",
+            "max_depth": 6,
+            "min_child_weight": 10,
+            "gamma": 0.1,
+            "subsample": 1.0,
+            "colsample_bytree": 0.8,
+            "lambda": null,
+            "alpha": null
+        },
+        {
+            "booster": "gbtree",
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "objective": "multi:softmax",
+            "eval_metric": "logloss",
+            "max_depth": 6,
+            "min_child_weight": 10,
+            "gamma": 0.1,
+            "subsample": 1.0,
+            "colsample_bytree": 0.8,
+            "lambda": null,
+            "alpha": null
+        },
+        {
+            "booster": "gbtree",
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "objective": "multi:softmax",
+            "eval_metric": "logloss",
+            "max_depth": 6,
+            "min_child_weight": 10,
+            "gamma": 0.1,
+            "subsample": 1.0,
+            "colsample_bytree": 0.8,
+            "lambda": null,
+            "alpha": null
+        }
+    ],
+    [
+        {
+            "n_estimators": 100,
+            "criterion": "gini",
+            "max_depth": null,
+            "min_samples_leaf": 1,
+            "min_samples_split": 2
+        },
+        {
+            "n_estimators": 100,
+            "criterion": "gini",
+            "max_depth": null,
+            "min_samples_leaf": 1,
+            "min_samples_split": 2
+        },
+        {
+            "n_estimators": 100,
+            "criterion": "gini",
+            "max_depth": null,
+            "min_samples_leaf": 1,
+            "min_samples_split": 2
+        },
+        {
+            "n_estimators": 100,
+            "criterion": "gini",
+            "max_depth": null,
+            "min_samples_leaf": 1,
+            "min_samples_split": 2
+        }
+    ]
+]
