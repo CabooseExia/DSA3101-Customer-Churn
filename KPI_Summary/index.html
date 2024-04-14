@@ -45,9 +45,49 @@
                     <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Persona Analysis</a></li>
                     <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Features Analysis</a></li>
                 </ul>
+                <button class="btn btn-outline-light side" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                    ≡ </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Persona Descriptions</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="mb-4">
+                            <h5 class="maroon">Savings Savant</h3>
+                            <h7> This group focuses on maximizing interest earnings and minimizing fees, always on the lookout for the best financial deals and no-cost banking.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Digital Dynamos</h3>
+                            <h7> Customers who prioritize innovative banking features, such as mobile banking, online transactions, and advanced ATM technology, to enhance their banking experience.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Trustee Tribe</h3>
+                            <h7> Those who value a personal touch, emphasizing reliable and accessible customer service, whether it’s through face-to-face interactions or dedicated support lines.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Frugal Innovators</h3>
+                            <h7> Clients who seek the right balance between cost-effective banking and access to modern banking technologies, optimizing both their financial and digital experiences.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Cost-Conscious Careseekers</h3>
+                            <h7> Banking customers who look for the combination of low-cost services with high-quality customer support, ensuring value without compromising on assistance.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Premium Patrons</h3>
+                            <h7> The elite customers who expect the latest in banking technology coupled with exceptional service, often opting into exclusive or premium bank offerings.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Triple Advantage Allies</h3>
+                            <h7> The most demanding yet potentially most loyal customers, who expect the best rates, cutting-edge features, and outstanding service, all in one package.</h5>
+                        </div>
+                    </div>
+                </div>
             </div> 
         </nav>
     </header>
+    
+    
 <!-- need to figure out how to utilize the custom range datepicker -->
 <div class="d-inline">
     <div class="dropdown mt-3 mx-5">
@@ -82,7 +122,21 @@
       <div class="col-7 mb-3">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">Persona Segmentation</h5>
+            <div class="d-flex justify-content-between">
+                <h5 class="card-title">Persona Segmentation</h5>
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#personainfo"><i class="fa fa-info-circle aria-hidden=true"></i></button>
+            </div>
+            <!-- Modal Popup -->
+            <div class="modal fade" id="personainfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body mt-auto">
+                            <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <!-- Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="container">
                 <div class="row">
                     <div class="col d-flex">
@@ -119,9 +173,9 @@
           <div class="card-body churn">
             <div class="d-flex justify-content-between">
                 <h5 class="card-title">Projected Churn Rate </h5>
-                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa fa-info-circle aria-hidden=true"></i></button>
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#projectedchurn"><i class="fa fa-info-circle aria-hidden=true"></i></button>
                 <!-- Modal Popup -->
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal fade" id="projectedchurn" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-body mt-auto">
@@ -129,10 +183,11 @@
                                 <div class="mb-3">
                                     <h4 class="mb-3"> Model Deployed:</h4>
                                     <h5 class="maroon"> <i class="fa fa-arrow-right"></i> Random Forest </h5>
-                                    <h5 class="maroon"> <i class="fa fa-arrow-right"></i> Convolutional Neural Networks (CNN) </h5>
+                                    <h5 class="maroon"> <i class="fa fa-arrow-right"></i> XGBoost </h5>
+                                    <h5 class="maroon"> <i class="fa fa-arrow-right"></i> Logistic Regression </h5>
                                 </div>
                                 <div>
-                                    <h4 class="mt-5 mb-3"> Classification Report:</h4>
+                                    <h4 class="mt-3 mb-3"> Classification Report:</h4>
                                     <table id="myTable" class="table table-bordered-sm">
                                         <thead>
                                           <tr>
