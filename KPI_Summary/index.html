@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 
     <!-- GXSChurn Logo -->
-    <link rel="preload" as="image" href="GXSChurn.png">
+    <link rel="preload" as="image" href="logo.png">
 
     <!-- Datepicker CSS -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -38,12 +38,12 @@
     <header>
         <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
             <div class="container-fluid">
-                <img src="GXSChurn.png" alt="GXSChurn logo">
+                <img src="logo.png" alt="GXSChurn logo">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
                     <li class="nav-item mx-3"><a href="#" class="nav-link active px-4">KPI Summary</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Transactional Analysis</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Persona Analysis</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Features Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Lifecycle Explorer</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Engagement Analytics</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Demographics Hub</a></li>
                 </ul>
                 <button class="btn btn-outline-light side" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
                     ≡ </button>
@@ -87,9 +87,8 @@
         </nav>
     </header>
     
-    
 <!-- need to figure out how to utilize the custom range datepicker -->
-<div class="d-inline">
+<div class="d-flex justify-content-between">
     <div class="dropdown mt-3 mx-5">
         <button  class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> 
             Time 
@@ -107,7 +106,9 @@
             </div>
         </ul>
     </div>
+    <div class="mt-4 mx-5" style="font-style: italic" id= "timestamp"></div>
 </div>
+
 <!-- Figure out the css styling for these div div divs -->
 <div class="container my-4">
     <div class="row">
@@ -123,7 +124,7 @@
         <div class="card h-100">
           <div class="card-body">
             <div class="d-flex justify-content-between">
-                <h5 class="card-title">Persona Segmentation</h5>
+                <h5 class="card-title">Top 3 Persona Segmentation</h5>
                 <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#personainfo"><i class="fa fa-info-circle aria-hidden=true"></i></button>
             </div>
             <!-- Modal Popup -->
@@ -132,7 +133,53 @@
                     <div class="modal-content">
                         <div class="modal-body mt-auto">
                             <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
-                            <!-- Content -->
+                            <h4 class="mb-3">Full Persona Segmentation</h4>
+                            <table id="myTable" class="table table-bordered-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="maroon">Rank</th>
+                                        <th scope="col" class="maroon">Persona</th>
+                                        <th scope="col" class="maroon">Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td scope="row" class="maroon">1</td>
+                                        <td id="first-persona"></td>
+                                        <td id="first-percent"></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" class="maroon">2</td>
+                                        <td id="second-persona"></td>
+                                        <td id="second-percent"></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" class="maroon">3</td>
+                                        <td id="third-persona"></td>
+                                        <td id="third-percent"></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" class="maroon">4</td>
+                                        <td id="fourth-persona"></td>
+                                        <td id="fourth-percent"></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" class="maroon">5</td>
+                                        <td id="fifth-persona"></td>
+                                        <td id="fifth-percent"></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" class="maroon">6</td>
+                                        <td id="sixth-persona"></td>
+                                        <td id="sixth-percent"></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" class="maroon">7</td>
+                                        <td id="seventh-persona"></td>
+                                        <td id="seventh-percent"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -142,24 +189,24 @@
                     <div class="col d-flex">
                         <div class= "card border-0">
                             <div class="card-body">
-                                <h3 href="#" id="first-persona" class= "persona-text text-center"> </h3>
-                                <h3 href="#" id="first-percent" class= "persona-number text-center"> </h3>
+                                <h3 href="#" id="first-persona-main" class= "persona-text text-center"> </h3>
+                                <h3 href="#" id="first-percent-main" class= "persona-number text-center"> </h3>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class= "card border-0">
                             <div class="card-body">
-                                <h3 href="#" id="second-persona" class= "persona-text text-center">  </h3>
-                                <h3 href="#" id="second-percent" class= "persona-number text-center">  </h3>
+                                <h3 href="#" id="second-persona-main" class= "persona-text text-center">  </h3>
+                                <h3 href="#" id="second-percent-main" class= "persona-number text-center">  </h3>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class= "card border-0">
                             <div class="card-body">   
-                                <h3 href="#" id="third-persona" class= "persona-text text-center"> </h3>
-                                <h3 href="#" id="third-percent" class= "persona-number text-center"> </h3> 
+                                <h3 href="#" id="third-persona-main" class= "persona-text text-center"> </h3>
+                                <h3 href="#" id="third-percent-main" class= "persona-number text-center"> </h3> 
                             </div>
                         </div>     
                     </div>
