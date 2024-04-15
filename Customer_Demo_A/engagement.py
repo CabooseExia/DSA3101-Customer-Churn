@@ -18,7 +18,7 @@ jsonLastUpdated = None
 
 def load_model():
     global report_dict, jsonLastUpdated
-    with open('Report_Dict.json', 'r') as file:
+    with open('./Report_Dict.json', 'r') as file:
         report_dict = json.load(file)
     LastUpdated = {'LastUpdated' : f"Last Updated at {datetime.now().replace(microsecond=0)}"}
     jsonLastUpdated = json.dumps(LastUpdated)
@@ -28,7 +28,7 @@ load_model()
 def load_data():
     global predicted_data
     try:
-        predicted_data = pd.read_csv("Predicted_Data.csv")
+        predicted_data = pd.read_csv("./Predicted_Data.csv")
         print("Data loaded successfully.")
         #print(global_data)
     except Exception as e:
@@ -72,7 +72,7 @@ customerpersona_data = [dict(row) for row in pd.DataFrame(selected_data).loc[:, 
 
 @app.route("/")
 def form():
-    return render_template("index.html")
+    return render_template("page1EA.html")
 
 
 @app.route('/api/model')
@@ -201,7 +201,7 @@ def handle_filters_CPA():
 
 @app.route("/result/customer-persona-analysis/<token_id>")
 def result_redirect_CPA(token_id):
-    return render_template("page2.html", token_id=token_id)
+    return render_template("page2EA.html", token_id=token_id)
 
 
 if __name__ == "__main__":
