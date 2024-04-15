@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GxSmartChurn Persona Analysis</title>
@@ -15,8 +15,8 @@
     
     <!-- CSS styles for the entire page -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-    <!-- GXSChurn Logo -->
-    <link rel="preload" as="image" href="{{ url_for('static', filename='GXSChurn.png') }}">
+    <!-- GXSmartChurn Logo -->
+    <link rel="preload" as="image" href="{{ url_for('static', filename='GXSmartChurn.png') }}">
     <!-- Font Awesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -33,13 +33,51 @@
     <header>
         <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
             <div class="container-fluid">
-                <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="Churn Image">
+                <img src="{{ url_for('static', filename='GXSmartChurn.png') }}" alt="Churn Image">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
                     <li class="nav-item mx-3"><a href="#" class="nav-link px-4">KPI Summary</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Transactional Analysis</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link active px-4">Customer Persona Analysis</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Customer Features Analysis</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Lifecycle Explorer</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link active px-4">Engagement Analytics</a></li>
+                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Demographics Hub</a></li>
                 </ul>
+                <button class="btn btn-outline-light side" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                    ≡ </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Persona Descriptions</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="mb-4">
+                            <h5 class="maroon">Savings Savant</h3>
+                            <h7> This group focuses on maximizing interest earnings and minimizing fees, always on the lookout for the best financial deals and no-cost banking.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Digital Dynamos</h3>
+                            <h7> Customers who prioritize innovative banking features, such as mobile banking, online transactions, and advanced ATM technology, to enhance their banking experience.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Trustee Tribe</h3>
+                            <h7> Those who value a personal touch, emphasizing reliable and accessible customer service, whether it’s through face-to-face interactions or dedicated support lines.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Frugal Innovators</h3>
+                            <h7> Clients who seek the right balance between cost-effective banking and access to modern banking technologies, optimizing both their financial and digital experiences.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Cost-Conscious Careseekers</h3>
+                            <h7> Banking customers who look for the combination of low-cost services with high-quality customer support, ensuring value without compromising on assistance.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Premium Patrons</h3>
+                            <h7> The elite customers who expect the latest in banking technology coupled with exceptional service, often opting into exclusive or premium bank offerings.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Triple Advantage Allies</h3>
+                            <h7> The most demanding yet potentially most loyal customers, who expect the best rates, cutting-edge features, and outstanding service, all in one package.</h5>
+                        </div>
+                    </div>
+                </div>
             </div> 
         </nav>
     </header>
@@ -69,25 +107,33 @@
                 <select multiple name="Gender" class="filter-select">
                     <option value="male">Male</option>
                     <option value="female">Female</option>
-                    <option value="other">Other</option>
                 </select>
             </div>
             
             <!-- Marital Status Filter -->
             <div class="filter-container">
                 <span class="filter-name">Marital Status</span>
-                <select multiple name="Marital Status" class="filter-select">
-                    <option value="single">Single</option>
-                    <option value="married">Married</option>
-                    <option value="divorced">Divorced</option>
-                    <option value="widowed">Widowed</option>
+                <select multiple name="MaritalStatus" class="filter-select">
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Divorced">Divorced</option>
+                </select>
+            </div>
+
+            <!-- Housing Status Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Housing Status</span>
+                <select multiple name="HousingStatus" class="filter-select">
+                    <option value="rented">Rent</option>
+                    <option value="owned">Purchased</option>
+                    <option value="norent_noown">No house No rent</option>
                 </select>
             </div>
             
             <!-- Number of Dependents Filter -->
             <div class="filter-container">
                 <span class="filter-name">Number of Dependents</span>
-                <select multiple name="Number of Dependents" class="filter-select">
+                <select multiple name="Dependants" class="filter-select">
                     <option value="0-0">0</option>
                     <option value="1-1">1</option>
                     <option value="2-2">2</option>
@@ -100,36 +146,40 @@
             <!-- Employment Status Filter -->
             <div class="filter-container">
                 <span class="filter-name">Employment Status</span>
-                <select multiple name="Employment Status" class="filter-select">
-                    <option value="employed">Employed</option>
-                    <option value="unemployed">Unemployed</option>
-                    <option value="self employed">Self-employed</option>
-                    <option value="student">Student</option>
-                    <option value="retired">Retired</option>
+                <select multiple name="EmploymentStatus" class="filter-select">
+                    <option value="Parttime">Employed</option>
+                    <option value="Fulltime">Unemployed</option>
+                    <option value="Self-employed">Self-employed</option>
+                    <option value="Student">Student</option>
+                    <option value="Retired">Retired</option>
                 </select>
             </div>
             
             <!-- Income Source Filter -->
             <div class="filter-container">
                 <span class="filter-name">Income Source</span>
-                <select multiple name="Income Source" class="filter-select">
-                    <option value="wages">Wages</option>
-                    <option value="salary">Salary</option>
-                    <option value="investments">Investments</option>
-                    <option value="rental income">Rental Income</option>
-                    <option value="pension">Pension</option>
+                <select multiple name="IncomeSource" class="filter-select">
+                    <option value="Employment">Employment</option>
+                    <option value="Investment">Investments</option>
+                    <option value="Self-employment">Self-employment</option>
+                    <option value="Allowance">Allowance</option>
+                    <option value="Rental">Rental</option>
+                    <option value="Retirement">Retirement</option>
                 </select>
             </div>
             
             <!-- Education Level Filter -->
             <div class="filter-container">
                 <span class="filter-name">Education Level</span>
-                <select multiple name="Education Level" class="filter-select">
-                    <option value="less than high school">Less Than High School</option>
-                    <option value="high school diploma">High School Diploma</option>
-                    <option value="some college">Some College</option>
-                    <option value="bachelor degree">Bachelor's Degree</option>
-                    <option value="graduate degree">Graduate Degree</option>
+                <select multiple name="Education" class="filter-select">
+                    <option value="PSLE">PSLE</option>
+                    <option value="O/N">O/N Level</option>
+                    <option value="A">A Level</option>
+                    <option value="Diploma">Diploma</option>
+                    <option value="Bachelors">Bachelor's Degree</option>
+                    <option value="Masters">Masters Degree</option>
+                    <option value="PHD">PhD</option>
+                    <option value="Post-Doc">Post-Doctorate</option>
                 </select>
             </div>
         </div>
@@ -141,34 +191,61 @@
             <!-- Account Balance Filter -->
             <div class="filter-container">
                 <span class="filter-name">Account Balance</span>
-                <select multiple name="Account Balance" class="filter-select">
+                <select multiple name="Balance" class="filter-select">
                     <option value="0-999">Less Than $1000</option>
-                    <option value="1000-5000">$1000 to $5000</option>
-                    <option value="5001-10000">$5001 to $10000</option>
-                    <option value="10001-INF">More Than $10000</option>
+                    <option value="1000-9999">$1000 to $10000</option>
+                    <option value="10000-49999">$10000 to $50000</option>
+                    <option value="50000-99999">$50000 to $100000</option>
+                    <option value="100000-INF">More Than $100000</option>
                 </select>
             </div>
+
+            <!-- Salary Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Estimated Yearly Salary</span>
+                <select multiple name="EstimatedSalary" class="filter-select">
+                    <option value="0-9999">Less Than $10000</option>
+                    <option value="10000-29999">$10000 to $30000</option>
+                    <option value="30000-49999">$30000 to $50000</option>
+                    <option value="50000-79999">$50000 to $80000</option>
+                    <option value="80000-99999">$80000 to $100000</option>
+                    <option value="100000-149999">$100000 to $150000</option>
+                    <option value="150000-INF">More than $150000</option>
+                </select>
+            </div>
+
+            <!-- Loans Filter -->
+            <div class="filter-container">
+                <span class="filter-name">Loan Amount</span>
+                <select multiple name="LoanAmt" class="filter-select">
+                    <option value="0-9999">Less Than $10000</option>
+                    <option value="10000-19999">$10000 to $20000</option>
+                    <option value="20000-29999">$20000 to $30000</option>
+                    <option value="30000-INF">$30000 or More</option>
+                </select>
+            </div>
+
+            
             
             <!-- Credit Utilization Filter -->
-            <div class="filter-container">
+            <!--<div class="filter-container">
                 <span class="filter-name">Credit Utilization</span>
-                <select multiple name="Credit Utilization" class="filter-select">
-                    <option value="0-29">Less Than 30%</option>
-                    <option value="30-60">30% to 60%</option>
-                    <option value="60-90">60% to 90%</option>
-                    <option value="91-INF">More Than 90%</option>
+                <select multiple name="CreditUtilization" class="filter-select">
+                    <option value="0.0-0.29999">Less Than 30%</option>
+                    <option value="0.3-0.59999">30% to 60%</option>
+                    <option value="0.6-0.89999">60% to 90%</option>
+                    <option value="0.9-1.0">More Than 90%</option>
                 </select>
-            </div>
+            </div> -->
             
             <!-- Number of Products Filter -->
             <div class="filter-container">
                 <span class="filter-name">Number of Products</span>
-                <select multiple name="Number of Products" class="filter-select">
+                <select multiple name="NumOfProducts" class="filter-select">
                     <option value="1-1">1</option>
                     <option value="2-2">2</option>
                     <option value="3-3">3</option>
                     <option value="4-4">4</option>
-                    <option value="5-INF">5 or more</option>
                 </select>
             </div>
             
@@ -176,42 +253,48 @@
             <div class="filter-container">
                 <span class="filter-name">Tenure</span>
                 <select multiple name="Tenure" class="filter-select">
-                    <option value="0-11">Less Than 1 Year</option>
-                    <option value="12-36">1 to 3 Years</option>
-                    <option value="36-60">3 to 5 Years</option>
-                    <option value="61-INF">More Than 5 Years</option>
+                    <option value="0-5">Less Than 6 Months</option>
+                    <option value="6-12">6 to 12 Months</option>
+                    <option value="13-INF">More than 1 Year</option>
                 </select>
             </div>
             
-            <!-- Credit Card Filter -->
+            <!-- Transaction Amount Filter -->
             <div class="filter-container">
-                <span class="filter-name">Credit Card</span>
-                <select multiple name="Credit Card" class="filter-select">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                <span class="filter-name">Transaction Amount</span>
+                <select multiple name="TransactionAmt" class="filter-select">
+                    <option value="0-999">Less Than $1000</option>
+                    <option value="1000-9999">$1000 to $10000</option>
+                    <option value="10000-49999">$10000 to $50000</option>
+                    <option value="50000-99999">$50000 to $100000</option>
+                    <option value="100000-INF">More Than $100000</option>
                 </select>
             </div>
 
-            <!-- Active Member Status Filter-->
+            <!-- Transaction Frequency Filter-->
             <div class="filter-container">
-                <span class="filter-name">Active Member Status</span>
-                <select multiple name="Active Member Status" class="filter-select">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                <span class="filter-name">Transaction Frequency</span>
+                <select multiple name="TransactionFreq" class="filter-select">
+                    <option value="0-19">Less than 20</option>
+                    <option value="20-39">20 to 40</option>
+                    <option value="40-59">40 to 60</option>
+                    <option value="60-79">60 to 80</option>
+                    <option value="80-99">80 to 100</option>
+                    <option value="100-INF">More than 100</option>
                 </select>
             </div>
 
             <!--Months Inactive Filter-->
             <div class="filter-container">
                 <span class="filter-name">Months Inactive</span>
-                <select multiple name="Months Inactive" class="filter-select">
+                <select multiple name="MonthsInactive" class="filter-select">
                     <option value="0-0">0</option>
                     <option value="1-1">1</option>
                     <option value="2-2">2</option>
                     <option value="3-3">3</option>
                     <option value="4-4">4</option>
                     <option value="5-5">5</option>
-                    <option value="6-INF">6 Or More</option>
+                    <option value="6-INF">6 or more</option>
                 </select>
             </div>
         </div>
@@ -223,45 +306,43 @@
             <!-- Customer Satisfaction Surveys Filter -->
             <div class="filter-container">
                 <span class="filter-name">Customer Satisfaction Surveys</span>
-                <select multiple name="Customer Satisfaction Surveys" class="filter-select">
-                    <option value="very satisfied">Very Satisfied</option>
-                    <option value="satisfied">Satisfied</option>
-                    <option value="neutral">Neutral</option>
-                    <option value="unsatisfied">Unsatisfied</option>
-                    <option value="very unsatisfied">Very Unsatisfied</option>
+                <select multiple name="CustomerSatisfaction" class="filter-select">
+                    <option value="5-5">Very Satisfied</option>
+                    <option value="4-4">Satisfied</option>
+                    <option value="3-3">Neutral</option>
+                    <option value="2-2">Unsatisfied</option>
+                    <option value="0-1">Very Unsatisfied</option>
                 </select>
             </div>
             
             <!-- Response to previous retention efforts Filter -->
             <div class="filter-container">
                 <span class="filter-name">Response to Previous Retention Efforts</span>
-                <select multiple name="Response to Previous Retention Efforts" class="filter-select">
-                    <option value="highly responsive">Highly Responsive</option>
-                    <option value="moderately responsive">Moderately Responsive</option>
-                    <option value="slightly responsive">Slightly Responsive</option>
-                    <option value="not responsive">Not Responsive</option>
+                <select multiple name="Retention" class="filter-select">
+                    <option value="0.7-1.0">Highly Responsive</option>
+                    <option value="0.5-0.69999">Moderately Responsive</option>
+                    <option value="0.3-0.49999">Slightly Responsive</option>
+                    <option value="0.0-0.29999">Not Responsive</option>
                 </select>
             </div>
             
             <!-- Channels used for transactions Filter -->
             <div class="filter-container">
-                <span class="filter-name">Channels Used for Transactions</span>
-                <select multiple name="Channels Used for Transactions" class="filter-select">
-                    <option value="online">Online</option>
-                    <option value="mobile">Mobile</option>
-                    <option value="in store">In Store</option>
-                    <option value="phone">Phone</option>
-                    <option value="mail order">Mail Order</option>
+                <span class="filter-name">Payment Method</span>
+                <select multiple name="PaymentMethod" class="filter-select">
+                    <option value="Paynow">Paynow</option>
+                    <option value="FAST">FAST</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Debit">Debit Card</option>
                 </select>
             </div>
             
             <!-- Marketing offers accepted Filter -->
             <div class="filter-container">
                 <span class="filter-name">Marketing Offers Accepted</span>
-                <select multiple name="Marketing Offers Accepted" class="filter-select">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                    <option value="sometimes">Sometimes</option>
+                <select multiple name="MarketingOffersAcceptance" class="filter-select">
+                    <option value="0.0-0.4999">Low Acceptance</option>
+                    <option value="0.5-1.0">High Acceptance</option>
                 </select>
             </div>
         
@@ -278,18 +359,7 @@
     var tokenId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     
     // Set token ID as hidden value
-    document.getElementById("token-id").value = tokenId;
-    // Add spinner display on form submit
-    //document.querySelector('.filter-section form').addEventListener('submit', function(e) {
-        // Optional: Prevent default form submission if doing AJAX
-        // e.preventDefault();
-        
-        // Show spinner
-        //document.getElementById('spinner').classList.remove('hidden');
-        
-        // If not using AJAX, form will proceed to submit normally, and you should handle hiding the spinner on page load if necessary
-        // If using AJAX, add your fetch/ajax call here, and then hide the spinner in the .then or .finally callback
-    //});   
+    document.getElementById("token-id").value = tokenId; 
 </script>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
