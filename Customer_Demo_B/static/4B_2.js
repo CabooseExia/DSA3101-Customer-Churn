@@ -6,20 +6,44 @@ function updateDashboardData() {
                 document.querySelector('.dashboard-section').innerHTML = "<h1 class='result-error'>ERROR: "+data["error"]+"</h1>";
             } else {
                 const customerData = data['Filtered Data'];
+
                 document.querySelector('.top-panels .panel:nth-child(1) p').innerText = customerData.length;
-                document.querySelector('.top-panels .panel:nth-child(2) p').innerText = customerData.length;
-                document.querySelector('.top-panels .panel:nth-child(3) p').innerText = customerData.length;
+
+                const tenureValues = customerData.map(customer => customer["Tenure"]);
+                const sumOfTenure = tenureValues.reduce((total, tenure) => total + tenure, 0);
+                document.querySelector('.top-panels .panel:nth-child(2) p').innerText = Math.floor(sumOfTenure / customerData.length) + " Months";
+
+                const moaValues = customerData.map(customer => customer["MarketingOffersAcceptance"]);
+                const sumOfMOA = moaValues.reduce((total, moa) => total + moa, 0);
+                document.querySelector('.top-panels .panel:nth-child(3) p').innerText = Math.round((sumOfMOA / customerData.length) * 100) + " %";
+
+                const acpValues = customerData.map(customer => customer["average_Churned_proba"]);
+                const sumOfACP = acpValues.reduce((total, acp) => total + acp, 0);
+                document.querySelector('.top-panels .panel:nth-child(4) p').innerText = Math.round((sumOfACP / customerData.length) * 100) + " %";
+
+                const adpValues = customerData.map(customer => customer["average_Dormant_proba"]);
+                const sumOfADP = adpValues.reduce((total, adp) => total + adp, 0);
+                document.querySelector('.top-panels .panel:nth-child(5) p').innerText = Math.round((sumOfADP / customerData.length) * 100) + " %";
+
+                const cssValues = customerData.map(customer => customer["CustomerSatisfaction"]);
+                const sumOfCSS = cssValues.reduce((total, css) => total + css, 0);
+                document.querySelector('.top-panels .panel:nth-child(6) p').innerText = Math.floor(sumOfCSS / customerData.length) + " out of 5";
+
                 plotAgeGenderChart(customerData);
-                plotBalanceChart(customerData);
                 plotProductCountChart(customerData);
-                plotServiceSupportChart(customerData);
-                plotMaritalHousingChart(customerData);
                 plotEducationEmploymentChart(customerData);
+                plotMaritalHousingChart(customerData);
                 plotIncomeSourceChart(customerData);
-                plotTransactionFrequencyAmountChart(customerData);
-                plotRetentionByMonthsInactiveChart(customerData);
+                plotBalanceChart(customerData);
                 plotPaymentMethodChart(customerData);
+                plotTransactionFrequencyAmountChart(customerData);
                 plotLoanAmountAndSalaryChart(customerData);
+                plotServiceSupportChart(customerData);
+                plotRetentionByMonthsInactiveChart(customerData);
+                plotChangeInBehaviourChart(customerData);
+                plotFeatureSupportChart(customerData);
+                plotDependentsCountChart(customerData);
+                plotChurnLikelihoodChart(customerData);
             }
             // Hide spinner after data is loaded
             document.getElementById("spinner-bg").style.opacity = "0";
@@ -30,6 +54,39 @@ function updateDashboardData() {
         })
         .catch(error => console.error('Error fetching dashboard data:', error));
 }
+
+
+
+
+const GXS_colors = {
+    eggplant500: '#0c0120',
+    neon100: '#af89f4',
+    pearl500: '#fafafa',
+    eggplant100: '#453b59',
+    black100: '#878787',
+    neon500: '#771fff',
+    black300: '#2b2b2b',
+    thunder500: '#ffd500',
+    gum500: '#f8326d',
+    mint500: '#75f9aa',
+    bolt500: '#4cc9f0',
+    candy500: '#ff96d2',
+    mint300: '#a7f8c7',
+    candy300: '#ffabdb',
+    thunder100: '#fff7b1',
+    gum100: '#ffbcc8',
+    neon300: '#8653e3',
+    egg300: '#272036',
+    bolt300: '#98e6ff',
+    thunder300: '#ffe666',
+    candy100: '#ffd5ed',
+    black500: 'black',
+    mint100: '#d4fce4',
+    pearl300: '#eee',
+    bolt100: '#c1f0ff',
+    gum300: '#f66f87',
+    pearl100: '#e9e9e9'
+};
 
 
 
@@ -88,7 +145,13 @@ function plotAgeGenderChart(customerData) {
         name: 'Male',
         type: 'bar',
         orientation: 'h',
-        marker: { color: 'rgb(31, 119, 180)' } 
+        marker: { 
+            color: GXS_colors.bolt500,
+            line: { 
+                color: 'rgba(0,0,0,0.5)', 
+                width: 1
+            }
+        }
     };
     
     const traceFemale = {
@@ -97,18 +160,24 @@ function plotAgeGenderChart(customerData) {
         name: 'Female',
         type: 'bar',
         orientation: 'h',
-        marker: { color: 'rgb(255, 105, 180)' } 
+        marker: { 
+            color: GXS_colors.candy500,
+            line: { 
+                color: 'rgba(0,0,0,0.5)', 
+                width: 1
+            }
+        }
     };
     
     const data = [traceMale, traceFemale];
     
     const layout = {
         title: 'Population by Age Group and Gender',
-        xaxis: { title: 'Population', tickformat: ',.0f' },
+        xaxis: { title: 'Count', tickformat: ',.0f' },
         yaxis: { title: 'Age Group', automargin: true }, 
         barmode: 'group',
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)', 
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)',
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
     };    
     
     Plotly.newPlot('age-gender-chart', data, layout);
@@ -124,7 +193,7 @@ function plotBalanceChart(customerData) {
         x: balances,
         type: 'histogram',
         marker: {
-            color: 'rgba(153, 102, 255, 0.7)',
+            color: GXS_colors.black500,
         },
         xbins: {
             start: 0,
@@ -136,8 +205,8 @@ function plotBalanceChart(customerData) {
         title: 'Account Balance Distribution',
         xaxis: { title: 'Account Balance' },
         yaxis: { title: 'Frequency' },
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)',
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)',
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
     };
 
     Plotly.newPlot('account-balance-chart', data, layout);
@@ -167,16 +236,20 @@ function plotProductCountChart(customerData) {
         y: Object.values(productCounts),
         type: 'bar',
         marker: {
-            color: Object.keys(productCounts).map(count => count == mostCommonCount ? 'rgb(128, 0, 128)' : 'rgb(186, 85, 211)'), 
+            color: Object.keys(productCounts).map(count => count == mostCommonCount ? GXS_colors.eggplant500 : GXS_colors.neon300), 
+            line: { 
+                color: 'rgba(0,0,0,0.5)', 
+                width: 2
+            }
         }
     }];
 
     const layout = {
         title: 'Number of Products per Customer',
         xaxis: { title: 'Number of Products' },
-        yaxis: { title: 'Number of Customers' },
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)',
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)',
+        yaxis: { title: 'Count' },
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
     };
 
     Plotly.newPlot('number-of-products-chart', data, layout);
@@ -194,16 +267,16 @@ function plotServiceSupportChart(customerData) {
         y: serviceSupportFrequency,
         type: 'box',
         marker: {
-            color: 'rgba(31, 119, 180, 0.7)'
+            color: GXS_colors.gum300
         }
     };
 
     const layout = {
-        title: 'Support Satisfaction vs. Service Support Frequency',
+        title: 'Service Support Frequency vs. Support Satisfaction',
         xaxis: {title: 'Support Satisfaction'}, 
         yaxis: {title: 'Service Support Frequency'}, 
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)', 
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)', 
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
     };
 
     Plotly.newPlot('service-support-frequency-support-satisfaction-chart', [trace], layout);
@@ -228,7 +301,7 @@ function plotMaritalHousingChart(customerData) {
         maritalData[marital][index]++;
     });
 
-    const colors = ['#1f77b4', '#9467bd', '#800000']; 
+    const colors = [GXS_colors.egg300, GXS_colors.neon300, GXS_colors.gum300, GXS_colors.bolt300]; 
 
     const traces = maritalStatus.map((status, i) => ({
         y: housingStatus,
@@ -237,15 +310,20 @@ function plotMaritalHousingChart(customerData) {
         type: 'bar',
         orientation: 'h', 
         marker: {
-            color: colors[i] 
+            color: colors[i],
+            line: { 
+                color: 'rgba(0,0,0,0.5)', 
+                width: 2
+            }
         }
     }));
 
     const layout = {
-        title: 'Marital Status vs. Housing Status',
+        title: 'Population by Marital Status & Housing Status',
+        xaxis: { title: 'Count' },
         barmode: 'group',
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)',
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)', 
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
         margin: {
             l: 100 
         }
@@ -273,20 +351,37 @@ function plotEducationEmploymentChart(customerData) {
         educationData[education][index]++;
     });
 
+    const colors = [
+        GXS_colors.eggplant500,
+        GXS_colors.neon100,
+        GXS_colors.bolt300,
+        GXS_colors.gum100,
+        GXS_colors.black100,
+        GXS_colors.neon500,
+        GXS_colors.mint500,
+        GXS_colors.thunder500
+    ];
+
     const traces = educationLevels.map((level, i) => ({
         x: employmentStatuses,
         y: educationData[level],
         name: level,
         type: 'bar',
+        marker: {
+            color: colors[i],
+            line: { 
+                color: 'rgba(0,0,0,0.5)', 
+                width: 1
+            }
+        }
     }));
 
     const layout = {
-        title: 'Education Level vs. Employment Status',
+        title: 'Population by Education Level & Employment Status',
         barmode: 'group',
-        xaxis: { title: 'Employment Status' },
         yaxis: { title: 'Count' },
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)',
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)',
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
         margin: {
             l: 100, 
             r: 50,
@@ -297,6 +392,7 @@ function plotEducationEmploymentChart(customerData) {
 
     Plotly.newPlot('education-employment-chart', traces, layout);
 }
+
 
 
 
@@ -318,12 +414,12 @@ function plotIncomeSourceChart(customerData) {
         theta: incomeSources,
         fill: 'toself',
         marker: {
-            color: 'rgba(138,43,226,0.7)' 
+            color: GXS_colors.gum500
         }
     }];
 
     const layout = {
-        title: 'Income Source Distribution',
+        title: 'Income Source Distribution Overview',
         polar: {
             radialaxis: {
                 visible: true,
@@ -331,8 +427,8 @@ function plotIncomeSourceChart(customerData) {
             }
         },
         showlegend: false,
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)',
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)',
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
     };
 
     Plotly.newPlot('income-source-chart', incomeSourceData, layout);
@@ -351,17 +447,17 @@ function plotTransactionFrequencyAmountChart(customerData) {
         mode: 'markers', 
         type: 'scatter',
         marker: {
-            color: 'rgba(0, 0, 139, 0.7)', 
+            color: GXS_colors.bolt500, 
             size: 8 
         }
     };
 
     const layout = {
-        title: 'Transaction Frequency vs. Transaction Amount',
+        title: 'Transaction Amount vs. Transaction Frequency',
         xaxis: { title: 'Transaction Frequency' },
         yaxis: { title: 'Transaction Amount' },
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)', 
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)', 
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
     };
 
     Plotly.newPlot('transaction-frequency-transaction-amount-chart', [trace], layout);
@@ -385,7 +481,7 @@ function plotRetentionByMonthsInactiveChart(customerData) {
         monthsRetentionMap.get(monthsInactive).push(retentionRate);
     });
 
-    const colors = ['#FF69B4'];
+    const colors = [GXS_colors.black100];
 
     const traces = [];
     for (const [monthsInactive, retentionRates] of monthsRetentionMap.entries()) {
@@ -406,14 +502,14 @@ function plotRetentionByMonthsInactiveChart(customerData) {
         title: 'Retention Rates by Months Inactive',
         xaxis: {
             title: 'Months Inactive',
-            range: [0, 8]
+            range: [0, 13]
         },
         yaxis: {
             title: 'Retention Rate'
         },
         showlegend: false,
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)', 
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)', 
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
     };
 
     Plotly.newPlot('retention-months-inactive-chart', traces, layout);
@@ -440,9 +536,9 @@ function plotPaymentMethodChart(customerData) {
     sortedCustomerCounts.reverse();
 
     const colors = sortedCustomerCounts.map((count, index) => {
-        if (index === 0) return 'green'; 
-        if (index === sortedCustomerCounts.length - 1) return 'red'; 
-        return 'purple'; 
+        if (index === 0) return GXS_colors.gum300; 
+        if (index === sortedCustomerCounts.length - 1) return GXS_colors.mint500; 
+        return GXS_colors.thunder300; 
     });
 
     const trace = {
@@ -451,16 +547,19 @@ function plotPaymentMethodChart(customerData) {
         type: 'bar',
         orientation: 'h',
         marker: {
-            color: colors
+            color: colors,
+            line: { 
+                color: 'rgba(0,0,0,0.5)', 
+                width: 2
+            }
         }
     };
 
     const layout = {
-        title: 'Payment Method Distribution',
-        xaxis: { title: 'Number of Customers' },
-        yaxis: { title: 'Payment Method' },
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)',
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)',
+        title: 'Payment Method',
+        xaxis: { title: 'Count' },
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
         margin: { l: 150 }
     };
 
@@ -471,37 +570,174 @@ function plotPaymentMethodChart(customerData) {
 
 
 function plotLoanAmountAndSalaryChart(customerData) {
-    const loanAmounts = customerData.map(customer => customer["RelationshipCount"]);
+    const loanAmounts = customerData.map(customer => customer["LoanAmt"]);
     const estimatedSalaries = customerData.map(customer => customer["EstimatedSalary"]);
 
-    const trace1 = {
+    const trace = {
         x: loanAmounts,
-        name: 'Loan Amount',
-        type: 'histogram',
+        y: estimatedSalaries,
+        mode: 'markers',
         marker: {
-            color: 'rgba(31, 119, 180, 0.7)'
-        }
+            color: GXS_colors.neon100, 
+            size: 10, 
+            opacity: 0.5 
+        },
+        name: 'Loan Amount', 
+        type: 'scatter' 
     };
 
-    const trace2 = {
-        x: estimatedSalaries,
-        name: 'Estimated Salary',
-        type: 'histogram',
+    const layout = {
+        title: 'Estimated Salary vs. Loan Amount',
+        xaxis: { title: 'Loan Amount' }, 
+        yaxis: { title: 'Estimated Salary' },
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
+    };
+
+    Plotly.newPlot('loan-amount-salary-chart', [trace], layout);
+}
+
+
+
+
+function plotChangeInBehaviourChart(customerData) {
+    const feature1 = customerData.map(customer => customer["ChangeInBehaviourMkt"]);
+    const feature2 = customerData.map(customer => customer["ChangeInBehaviourCust"]);
+
+    const colorScale = [
+        [0.0, '#ffffff'],
+        [0.1, '#fcffa4'],
+        [0.2, '#f7d32e'],
+        [0.3, '#fb9c06'],
+        [0.4, '#ed6925'],
+        [0.5, '#cf4446'],
+        [0.6, '#a52c60'],
+        [0.7, '#781c6d'],
+        [0.8, '#4a0c6b'],
+        [0.9, '#1b0c41'],
+        [1.0, '#000004']
+    ];
+
+    const trace = {
+        x: feature1,
+        y: feature2,
+        type: 'histogram2dcontour',
+        colorscale: colorScale,
+    };
+
+    const data = [trace];
+
+    const layout = {
+        title: 'Customer Reaction',
+        xaxis: { title: "Change In Behaviour after GXS' Marketing" },
+        yaxis: { title: 'Change In Behaviour after Customer Support' },
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
+    };
+
+    Plotly.newPlot('change-in-behaviour-chart', data, layout);
+}
+
+
+
+
+function plotFeatureSupportChart(customerData) {
+    const featureSupportFrequency = customerData.map(customer => customer["FeatureSupportFrequency"]);
+    const featureSatisfaction = customerData.map(customer => customer["FeatureSatisfaction"]);
+
+    const trace = {
+        x: featureSatisfaction, 
+        y: featureSupportFrequency,
+        type: 'box',
         marker: {
-            color: 'rgba(255, 127, 14, 0.7)' 
+            color: GXS_colors.bolt500
         }
     };
 
     const layout = {
-        title: 'Loan Amount and Estimated Salary Distribution',
-        xaxis: { title: 'Value' },
-        yaxis: { title: 'Count' },
-        barmode: 'overlay', 
-        plot_bgcolor: 'rgba(240, 240, 240, 0.8)',
-        paper_bgcolor: 'rgba(240, 240, 240, 0.8)',
+        title: 'Feature Support Frequency vs. Feature Satisfaction',
+        xaxis: {title: 'Feature Satisfaction'}, 
+        yaxis: {title: 'Feature Support Frequency'}, 
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
     };
 
-    Plotly.newPlot('loan-amount-salary-chart', [trace1, trace2], layout);
+    Plotly.newPlot('feature-support-frequency-satisfaction-chart', [trace], layout);
+}
+
+
+
+
+function plotDependentsCountChart(customerData) {
+    const dependentsCount = {};
+
+    customerData.forEach(customer => {
+        const dependents = customer["Dependents"];
+
+        dependentsCount[dependents] = (dependentsCount[dependents] || 0) + 1;
+    });
+
+    const xValues = Object.keys(dependentsCount);
+    const yValues = Object.values(dependentsCount);
+
+    const maxIndex = yValues.indexOf(Math.max(...yValues));
+
+    const colors = yValues.map((value, index) => {
+        return index === maxIndex ? GXS_colors.gum500 : GXS_colors.gum100;
+    });
+
+    const trace = {
+        x: yValues,
+        y: xValues,
+        type: 'bar',
+        orientation: 'h',
+        marker: {
+            color: colors,
+            line: {
+                color: 'rgba(0,0,0,0.5)',
+                width: 2
+            }
+        }
+    };
+
+    const layout = {
+        title: "Customers' Dependents Distribution",
+        xaxis: { title: 'Frequency' },
+        yaxis: { title: 'Number of Dependents' },
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
+    };
+
+    Plotly.newPlot('dependents-count-chart', [trace], layout);
+}
+
+
+
+
+function plotChurnLikelihoodChart(customerData) {
+    const churnLikelihoodData = customerData.map(customer => customer["average_Churned_proba"]);
+
+    const data = [{
+        x: churnLikelihoodData,
+        type: 'histogram',
+        marker: {
+            color: GXS_colors.neon300,
+        },
+        xbins: {
+            start: 0,
+            size: 0.01
+        }
+    }];
+
+    const layout = {
+        title: 'Churn Likelihood Distribution',
+        xaxis: {title: 'Churn Likelihood'},
+        yaxis: {title: 'Frequency'},
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
+    };
+
+    Plotly.newPlot('churn-likelihood-chart', data, layout);
 }
 
 window.onload = function() {
