@@ -1,4 +1,4 @@
-// This is for the better UI interface for index.html
+// This is for the better UI interface for EA_1.html
 $(document).ready(function() {
   // Initialize Select2 for all select elements
   $('.filter-select').select2({
