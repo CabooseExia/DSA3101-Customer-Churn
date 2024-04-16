@@ -16,7 +16,7 @@
     <!-- CSS styles for the entire page -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='4B.css') }}">
     <!-- GXSChurn Logo -->
-    <link rel="preload" as="image" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="preload" as="image" href="{{ url_for('static', filename='GXSChurn.png') }}">
     <!-- Font Awesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -28,7 +28,7 @@
     <header>
         <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
             <div class="container-fluid">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="Churn Image">
+                <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="Churn Image">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
                     <li class="nav-item mx-3"><a href="#" class="nav-link px-4">KPI Summary</a></li>
                     <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Lifecycle Explorer</a></li>
@@ -79,7 +79,7 @@
 
     <!-- Spinner -->
     <div id="spinner-bg" class="spinner-bg">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="GxSmartChurn logo">
+        <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="GxSmartChurn logo">
         <p>Running...</p>
         <div id="spinner" class="spinner"></div>
     </div>
