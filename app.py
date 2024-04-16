@@ -121,8 +121,6 @@ def updateData(data):
 
     persona_segment_full = []
     personaFreq = collections.Counter(persona)
-    print(personaFreq)
-    print("Total is "+ str(personaFreq.total()))
     for key,value in personaFreq.items():
         pctg = value/personaFreq.total()
         persona_segment_full.append({"persona":key, "pctg":pctg})
