@@ -10,10 +10,10 @@
   <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
   
   <!-- css styles for the entire page -->
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='LE.css') }}">
 
   <!-- GXSChurn Logo -->
-  <link rel="preload" as="image" href="GXSmartChurn.png">
+  <link rel="preload" as="image" href="{{ url_for('static', filename='GXSmartChurn.png') }}">
 
   <!-- Datepicker CSS -->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -37,12 +37,12 @@
     <header>
         <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
             <div class="container-fluid">
-                <img src="GXSmartChurn.png" alt="GXSmartChurn logo">
+                <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="Churn Image">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
-                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">KPI Summary</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link active px-4">Lifecycle Explorer</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Engagement Analytics</a></li>
-                    <li class="nav-item mx-3"><a href="#" class="nav-link px-4">Demographics Hub</a></li>
+                    <li class="nav-item mx-3"><a href="/" class="nav-link px-4">KPI Summary</a></li>
+                    <li class="nav-item mx-3"><a href="/Lifecycle-Explorer" class="nav-link active px-4">Lifecycle Explorer</a></li>
+                    <li class="nav-item mx-3"><a href="/Engagement-Analytics" class="nav-link px-4">Engagement Analytics</a></li>
+                    <li class="nav-item mx-3"><a href="/Demographics-Hub" class="nav-link px-4">Demographics Hub</a></li>
                 </ul>
 
                 <button class="btn btn-outline-light side" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -141,7 +141,7 @@
     <div id="transitionHeatmap" class="heatmap-container"></div>
 </div>
 
-<script src="scripts.js"></script>
+<script src="LE.js", href="{{ url_for('static', filename='LE.js') }}"></script>
 </body>
 </html>
 
