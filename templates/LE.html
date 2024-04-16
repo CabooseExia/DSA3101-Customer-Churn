@@ -2,33 +2,33 @@
 <html>
 <head>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GxSmartChurn Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GxSmartChurn Lifecycle Explorer</title>
 
-  <!-- font Inter for the header -->
-  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
-  
-  <!-- css styles for the entire page -->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='LE.css') }}">
+<!-- font Inter for the header -->
+<link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
 
-  <!-- GXSChurn Logo -->
-  <link rel="preload" as="image" href="{{ url_for('static', filename='GXSmartChurn.png') }}">
+<!-- css styles for the entire page -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='LE.css') }}">
 
-  <!-- Datepicker CSS -->
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<!-- GXSChurn Logo -->
+<link rel="preload" as="image" href="{{ url_for('static', filename='GXSChurn.png') }}">
 
-  <!-- For the Font Awesome Icon -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  
-  <!-- Plotly JS  -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<!-- Datepicker CSS -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!-- For the Font Awesome Icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Plotly JS  -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </head>
 
@@ -46,43 +46,43 @@
                 </ul>
 
                 <button class="btn btn-outline-light side" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                  ≡ </button>
-              <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                  <div class="offcanvas-header">
-                      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Persona Descriptions</h5>
-                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                  </div>
-                  <div class="offcanvas-body">
-                      <div class="mb-4">
-                          <h5 class="maroon">Savings Savant</h3>
-                          <h7> This group focuses on maximizing interest earnings and minimizing fees, always on the lookout for the best financial deals and no-cost banking.</h5>
-                      </div>
-                      <div class="mb-4">
-                          <h5 class="maroon">Digital Dynamos</h3>
-                          <h7> Customers who prioritize innovative banking features, such as mobile banking, online transactions, and advanced ATM technology, to enhance their banking experience.</h5>
-                      </div>
-                      <div class="mb-4">
-                          <h5 class="maroon">Trustee Tribe</h3>
-                          <h7> Those who value a personal touch, emphasizing reliable and accessible customer service, whether it’s through face-to-face interactions or dedicated support lines.</h5>
-                      </div>
-                      <div class="mb-4">
-                          <h5 class="maroon">Frugal Innovators</h3>
-                          <h7> Clients who seek the right balance between cost-effective banking and access to modern banking technologies, optimizing both their financial and digital experiences.</h5>
-                      </div>
-                      <div class="mb-4">
-                          <h5 class="maroon">Cost-Conscious Careseekers</h3>
-                          <h7> Banking customers who look for the combination of low-cost services with high-quality customer support, ensuring value without compromising on assistance.</h5>
-                      </div>
-                      <div class="mb-4">
-                          <h5 class="maroon">Premium Patrons</h3>
-                          <h7> The elite customers who expect the latest in banking technology coupled with exceptional service, often opting into exclusive or premium bank offerings.</h5>
-                      </div>
-                      <div class="mb-4">
-                          <h5 class="maroon">Triple Advantage Allies</h3>
-                          <h7> The most demanding yet potentially most loyal customers, who expect the best rates, cutting-edge features, and outstanding service, all in one package.</h5>
-                      </div>
-                  </div>
-              </div>
+                    ≡ </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Persona Descriptions</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="mb-4">
+                            <h5 class="maroon">Savings Savant</h3>
+                            <h7> This group focuses on maximizing interest earnings and minimizing fees, always on the lookout for the best financial deals and no-cost banking.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Digital Dynamos</h3>
+                            <h7> Customers who prioritize innovative banking features, such as mobile banking, online transactions, and advanced ATM technology, to enhance their banking experience.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Trustee Tribe</h3>
+                            <h7> Those who value a personal touch, emphasizing reliable and accessible customer service, whether it’s through face-to-face interactions or dedicated support lines.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Frugal Innovators</h3>
+                            <h7> Clients who seek the right balance between cost-effective banking and access to modern banking technologies, optimizing both their financial and digital experiences.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Cost-Conscious Careseekers</h3>
+                            <h7> Banking customers who look for the combination of low-cost services with high-quality customer support, ensuring value without compromising on assistance.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Premium Patrons</h3>
+                            <h7> The elite customers who expect the latest in banking technology coupled with exceptional service, often opting into exclusive or premium bank offerings.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Triple Advantage Allies</h3>
+                            <h7> The most demanding yet potentially most loyal customers, who expect the best rates, cutting-edge features, and outstanding service, all in one package.</h5>
+                        </div>
+                    </div>
+                </div>
 
             </div> 
         </nav>
