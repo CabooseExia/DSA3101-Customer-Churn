@@ -16,12 +16,9 @@ customRange = False
 start = None 
 end = None  
 df = None
-with open("timestamp.json","r") as timefile:
-    global timestamp
-    timestamp = json.load(timefile)
-with open("predicted_model.json","r") as output:
-    raw = json.load(output) #entire 120k dict of dict
-    df = pd.DataFrame.from_records(raw)
+LastUpdated = f"Last Updated at {datetime.now().replace(microsecond=0)}"
+df = pd.read_csv('Predicted_Data.csv')
+
 dates = [datetime.strptime(x,"%Y-%m-%d") for x in df['ChurnDate'] if not pd.isnull(x) ]
 minStartDate = min(dates)
 maxEndDate = max(dates)
@@ -76,7 +73,7 @@ def updateData(data):
     filtered = filter(data)
     churn_dates = [np.datetime64(x) for x in filtered['ChurnDate'] if not pd.isnull(x)]
     hist_churn = [1 if not pd.isnull(x) else 0 for x in filtered['ChurnDate']]
-    account = [filtered["TransactionAmt"].iloc[i] for i in range(filtered["TransactionAmt"].shape[0]) if hist_churn[i] == 1]
+    account = [filtered["Balance"].iloc[i] for i in range(filtered["Balance"].shape[0]) if hist_churn[i] == 1]
     proj_churn = [filtered["PredLifecycle_Churned"].iloc[i] for i in range(filtered["PredLifecycle_Churned"].shape[0]) if hist_churn[i] == 0]
     persona = filtered["CombinedPersonas"].tolist()
 
@@ -199,7 +196,7 @@ CORS(app, origins='http://127.0.0.1:5500')
 
 @app.route('/api/data/KPI-Summary')
 def get_numerical_data():
-    global df,hist_churn_percentage, proj_churn_percentage, persona_segment_full, persona_segment_top_3, loss_impact_graph, hist_churn_graph,timestamp
+    global df,hist_churn_percentage, proj_churn_percentage, persona_segment_full, persona_segment_top_3, loss_impact_graph, hist_churn_graph,LastUpdated
     updateData(df)
     data = {}
     data["hist-churn"] = hist_churn_percentage
@@ -208,7 +205,7 @@ def get_numerical_data():
     data["persona-segment-full"] = persona_segment_full
     data["loss-impact-graph"] = loss_impact_graph
     data["hist-churn-graph"] = hist_churn_graph
-    data["timestamp"] = timestamp
+    data["timestamp"] = LastUpdated
 
     return jsonify(data)
 
@@ -246,7 +243,7 @@ def handle_time_filter():
 def get_model():
     # Your code to fetch and process data from the desired source
     # For simplicity, let's assume dummy data
-    with open("model_perform.json","r") as perform:
+    with open("Report_Dict.json","r") as perform:
         model_perform = json.load(perform)
         return jsonify(model_perform)
 
