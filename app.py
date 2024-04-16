@@ -72,8 +72,10 @@ selected_columns = [
     "average_Churned_proba"
 ]
 
-EA_selected_data = [entry for entry in predicted_data.to_dict(orient='records') if entry["PrevLifecycle_Churned"] != 1 and entry["CurrLifecycle_Churned"] != 1]
-EA_data = [dict(row) for row in pd.DataFrame(EA_selected_data).loc[:, selected_columns].to_dict(orient='records')]
+EA_selected_data = predicted_data[selected_columns]
+EA_data = EA_selected_data[EA_selected_data['ChurnDate'].isna()]
+EA_data.drop('ChurnDate', axis=1, inplace=True)
+EA_data = EA_data.to_dict(orient='records')
 
 DH_selected_data = predicted_data[selected_columns]
 DH_data = DH_selected_data[DH_selected_data['ChurnDate'].isna()]
