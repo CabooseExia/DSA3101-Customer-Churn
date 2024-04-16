@@ -1,57 +1,90 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import pandas as pd
+import plotly.express as px
+import plotly.io as pio
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/data')
+# Load data from a CSV file
+df = pd.read_csv('Predicted_Data.csv')
+
+@app.route('/api/data', methods=['GET'])
 def get_data():
-    # Fetch query parameters for persona filtering
-    personas = request.args.getlist('persona')  # This will get personas as a list
+    personas = request.args.getlist('persona')
+    # Filter the DataFrame to include only the selected personas, if any
+    filtered_df = df[df['CombinedPersonas'].isin(personas)] if personas else df
 
-    all_data = [
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Savings Savant', 'CurrLifecycle': 'Active', 'PredictedLifecycle': 'Dormant', 'Average_Churned_Proba': 25},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Savings Savant', 'CurrLifecycle': 'Dormant', 'PredictedLifecycle': 'Churned', 'Average_Churned_Proba': 64},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Savings Savant', 'CurrLifecycle': 'Churned', 'PredictedLifecycle': 'Reactivated', 'Average_Churned_Proba': 54},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Savings Savant', 'CurrLifecycle': 'Reactivated', 'PredictedLifecycle': 'Active', 'Average_Churned_Proba': 38},
+    # Data for the first graph: Distribution of Lifecycles by Persona
+    lifecycle_counts = filtered_df.groupby(['CombinedPersonas', 'CurrLifecycle']).size().reset_index(name='Count')
+    fig1 = px.bar(lifecycle_counts, 
+                  x="CurrLifecycle", 
+                  y="Count", 
+                  color="CombinedPersonas", 
+                  barmode="group",
+                  labels={"CurrLifecycle": "Lifecycle", "Count": "Number of Users"},
+                  title="Distribution of Lifecycles by Persona")
+    fig1.update_layout(
+        legend_title_text='Legend',
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.3,
+            xanchor="center",
+            x=0.5
+        )
+    )
 
-        {'FirstPersona': 'Digital Dynamos', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Digital Dynamos', 'CurrLifecycle': 'Active', 'PredictedLifecycle': 'Dormant', 'Average_Churned_Proba': 92},
-        {'FirstPersona': 'Digital Dynamos', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Digital Dynamos', 'CurrLifecycle': 'Dormant', 'PredictedLifecycle': 'Churned', 'Average_Churned_Proba': 21},
-        {'FirstPersona': 'Digital Dynamos', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Digital Dynamos', 'CurrLifecycle': 'Churned', 'PredictedLifecycle': 'Reactivated', 'Average_Churned_Proba': 63},
-        {'FirstPersona': 'Digital Dynamos', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Digital Dynamos', 'CurrLifecycle': 'Reactivated', 'PredictedLifecycle': 'Active', 'Average_Churned_Proba': 43},
+    # Data for the second graph: Churn Probability by Lifecycle and Persona
+    churn_lifecycles = ['Active', 'Dormant', 'Reactivated']
+    churn_df = filtered_df[filtered_df['CurrLifecycle'].isin(churn_lifecycles)]
 
-        {'FirstPersona': 'Trustee Tribe', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Trustee Tribe', 'CurrLifecycle': 'Active', 'PredictedLifecycle': 'Dormant', 'Average_Churned_Proba': 59},
-        {'FirstPersona': 'Trustee Tribe', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Trustee Tribe', 'CurrLifecycle': 'Dormant', 'PredictedLifecycle': 'Churned', 'Average_Churned_Proba': 7},
-        {'FirstPersona': 'Trustee Tribe', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Trustee Tribe', 'CurrLifecycle': 'Churned', 'PredictedLifecycle': 'Reactivated', 'Average_Churned_Proba': 23},
-        {'FirstPersona': 'Trustee Tribe', 'SecondPersona':'', 'ThirdPersona':'', 'CombinedPersonas': 'Trustee Tribe', 'CurrLifecycle': 'Reactivated', 'PredictedLifecycle': 'Active', 'Average_Churned_Proba': 95},
+    # Calculate the average churn probability per lifecycle and persona
+    average_churn = churn_df.groupby(['CombinedPersonas', 'CurrLifecycle']).agg({'average_Churned_proba': 'mean'}).reset_index()
+    average_churn['average_Churned_proba'] *= 100  # Converts the proportion to a percentage
+    
 
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Digital Dynamos', 'ThirdPersona':'', 'CombinedPersonas': 'Frugal Innovators', 'CurrLifecycle': 'Active', 'PredictedLifecycle': 'Dormant', 'Average_Churned_Proba': 22},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Digital Dynamos', 'ThirdPersona':'', 'CombinedPersonas': 'Frugal Innovators', 'CurrLifecycle': 'Dormant', 'PredictedLifecycle': 'Churned', 'Average_Churned_Proba': 66},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Digital Dynamos', 'ThirdPersona':'', 'CombinedPersonas': 'Frugal Innovators', 'CurrLifecycle': 'Churned', 'PredictedLifecycle': 'Reactivated', 'Average_Churned_Proba': 54},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Digital Dynamos', 'ThirdPersona':'', 'CombinedPersonas': 'Frugal Innovators', 'CurrLifecycle': 'Reactivated', 'PredictedLifecycle': 'Active', 'Average_Churned_Proba': 41},
+    fig2 = px.bar(average_churn, 
+                  x="average_Churned_proba", 
+                  y="CurrLifecycle", 
+                  color="CombinedPersonas", 
+                  orientation='h',
+                  barmode='group',
+                  labels={"CurrLifecycle": "Lifecycle", "average_Churned_proba": "Churn Probability (%)"},
+                  title="Churn Probability by Lifecycle and Persona")
+    fig2.update_layout(
+        xaxis=dict(
+            range=[0, 100]  # This sets the x-axis to extend from 0 to 100
+        ),
+        legend_title_text='Legend',
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.3,
+            xanchor="center",
+            x=0.5
+        )
+    )
 
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Trustee Tribe', 'ThirdPersona':'', 'CombinedPersonas': 'Cost-Conscious Careseekers', 'CurrLifecycle': 'Active', 'PredictedLifecycle': 'Dormant', 'Average_Churned_Proba': 32},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Trustee Tribe', 'ThirdPersona':'', 'CombinedPersonas': 'Cost-Conscious Careseekers', 'CurrLifecycle': 'Dormant', 'PredictedLifecycle': 'Churned', 'Average_Churned_Proba': 73},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Trustee Tribe', 'ThirdPersona':'', 'CombinedPersonas': 'Cost-Conscious Careseekers', 'CurrLifecycle': 'Churned', 'PredictedLifecycle': 'Reactivated', 'Average_Churned_Proba': 54},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Trustee Tribe', 'ThirdPersona':'', 'CombinedPersonas': 'Cost-Conscious Careseekers', 'CurrLifecycle': 'Reactivated', 'PredictedLifecycle': 'Active', 'Average_Churned_Proba': 69},
 
-        {'FirstPersona': 'Digital Dynamos', 'SecondPersona':'Trustee Tribe', 'ThirdPersona':'', 'CombinedPersonas': 'Premium Patrons', 'CurrLifecycle': 'Active', 'PredictedLifecycle': 'Dormant', 'Average_Churned_Proba': 42},
-        {'FirstPersona': 'Digital Dynamos', 'SecondPersona':'Trustee Tribe', 'ThirdPersona':'', 'CombinedPersonas': 'Premium Patrons', 'CurrLifecycle': 'Dormant', 'PredictedLifecycle': 'Churned', 'Average_Churned_Proba': 37},
-        {'FirstPersona': 'Digital Dynamos', 'SecondPersona':'Trustee Tribe', 'ThirdPersona':'', 'CombinedPersonas': 'Premium Patrons', 'CurrLifecycle': 'Churned', 'PredictedLifecycle': 'Reactivated', 'Average_Churned_Proba': 5},
-        {'FirstPersona': 'Digital Dynamos', 'SecondPersona':'Trustee Tribe', 'ThirdPersona':'', 'CombinedPersonas': 'Premium Patrons', 'CurrLifecycle': 'Reactivated', 'PredictedLifecycle': 'Active', 'Average_Churned_Proba': 89},
+    # Generate lifecycle transition heatmap
+    transition_matrix = pd.crosstab(index=filtered_df['CurrLifecycle'], columns=filtered_df['PredictedLifecycle'])
+    fig3 = px.imshow(transition_matrix,
+                     labels=dict(x="Predicted Lifecycle", y="Current Lifecycle", color="Number of Users"),
+                     x=transition_matrix.columns,
+                     y=transition_matrix.index,
+                     title="Lifecycle Transition Heatmap",
+                     color_continuous_scale='RdYlGn')  # Using predefined color scale RdYlGn
+    fig3.update_layout(legend_title_text='Number of Users', xaxis_nticks=36)
 
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Digital Dynamos', 'ThirdPersona':'Trustee Tribe', 'CombinedPersonas': 'Triple Advantage Allies', 'CurrLifecycle': 'Active', 'PredictedLifecycle': 'Dormant', 'Average_Churned_Proba': 38},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Digital Dynamos', 'ThirdPersona':'Trustee Tribe', 'CombinedPersonas': 'Triple Advantage Allies', 'CurrLifecycle': 'Dormant', 'PredictedLifecycle': 'Churned', 'Average_Churned_Proba': 45},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Digital Dynamos', 'ThirdPersona':'Trustee Tribe', 'CombinedPersonas': 'Triple Advantage Allies', 'CurrLifecycle': 'Churned', 'PredictedLifecycle': 'Reactivated', 'Average_Churned_Proba': 58},
-        {'FirstPersona': 'Savings Savant', 'SecondPersona':'Digital Dynamos', 'ThirdPersona':'Trustee Tribe', 'CombinedPersonas': 'Triple Advantage Allies', 'CurrLifecycle': 'Reactivated', 'PredictedLifecycle': 'Active', 'Average_Churned_Proba': 62}
-    ]
 
-    # Filter data based on personas, if any
-    if personas:
-        filtered_data = [data for data in all_data if data['CombinedPersonas'] in personas]
-        return jsonify(filtered_data)
-    else:
-        return jsonify(all_data)
+    # Convert both figures to JSON strings using Plotly's to_json function
+    graph_json1 = pio.to_json(fig1)
+    graph_json2 = pio.to_json(fig2)
+    graph_json3 = pio.to_json(fig3)
+
+    return jsonify(graph1=graph_json1, graph2=graph_json2, graph3=graph_json3)
 
 if __name__ == '__main__':
     app.run(debug=True)

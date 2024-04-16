@@ -8,7 +8,8 @@ html{
     width:100%;
 }
 body {
-    background: linear-gradient(0deg, rgb(255,255,255),rgba(153, 153, 153,0.3), rgb(255,255,255) );
+    /* background: linear-gradient(0deg, rgb(255,255,255),rgba(153, 153, 153,0.3), rgb(255,255,255) ); */
+    background-color: #FFFFFF; /* Set background color to white */
     margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -36,8 +37,13 @@ body {
   
 .chart-title { 
     text-align: center; 
-    margin-top: 20px;  /* Adds some space above the title, adjust as needed */
-    margin-bottom: 20px;  /* Adds some space below the title, adjust as needed */
+    margin-top: 30px;  
+    margin-bottom: 50px;
+    font-size: 36px;
+    font-weight: bold; /* Makes the title bold */
+    color: #333; /* Sets a dark gray color for better readability */
+    padding: 5px; /* Adds a little padding around the text */
+    text-decoration: underline;
 }
 
 .main-content {
@@ -47,13 +53,43 @@ body {
     align-items: flex-start;
     gap: 20px; /* Adds space between the chart containers */
     padding: 20px; /* Adds padding inside the main content area */
+    width: 100%;
 }
 
-.chart-container {
-    flex: 1; /* Allows each container to grow */
-    min-width: 300px; /* Minimum width before wrapping */
-    height: 600px; /* Set a fixed height or min-height as preferred */
+.graph-row {
+    display: flex;
+    justify-content: center; /* Center the graphs horizontally within the row */
+    width: 100%; /* Takes full width to accommodate both graphs side by side */
 }
+
+#no-selection-message {
+    display: flex;
+    justify-content: center;  /* Centers content horizontally */
+    align-items: center;      /* Centers content vertically */
+    height: 100vh;            /* Makes the container take the full height of the viewport */
+    text-align: center;
+    margin: 0;
+    position: relative;       /* Ensures the flex container positions itself correctly */
+}
+
+.main-content {
+    display: none; /* Initially hidden */
+}
+
+.chart-container, .heatmap-container {
+    flex: 1;
+    min-width: 300px;
+    height: 600px;
+    margin: 20px;
+    box-shadow: 0px 0px 10px #ccc; /* Optionally adds a subtle shadow for 3D effect */
+    border: 2px solid #ccc;
+    padding: 10px;  /* Ensure this doesn't push the graph out of alignment */
+    background-color: #ffffff;
+    display: flex;  /* Ensures the container is flexible */
+    justify-content: center;  /* Center content horizontally */
+    align-items: center;  /* Center content vertically */
+}
+
 
 
 #lifecycleDistribution, #churnProbability {
@@ -79,6 +115,8 @@ body {
     cursor: pointer;
     border-radius: 5px;
     position: relative;
+    width: 40%; /* Use percentage to make it responsive */
+    max-width: none; /* Ensures it doesn’t get too wide on larger screens */
 }
   
 .arrow {
