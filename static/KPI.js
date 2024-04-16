@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="GXSChurn.png" alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
+    $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="../static/GXSChurn.png" alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
     document.getElementById('spinner-bg').classList.remove('hidden')
     var startDate = null;
     var endDate = null;
@@ -108,7 +108,7 @@ $(document).ready(function() {
   
     // Fixed option 1 click event
     $('#past-six-month').click(function() {
-        $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="GXSChurn.png" alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
+        $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="../static/GXSChurn.png"  alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
         document.getElementById('spinner-bg').classList.remove('hidden')
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://127.0.0.1:5000/api/time-filter/KPI-Summary');
@@ -134,7 +134,7 @@ $(document).ready(function() {
   
     // Fixed option 2 click event
     $('#past-one-year').click(function() {
-        $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="GXSChurn.png" alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
+        $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="../static/GXSChurn.png"  alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
         document.getElementById('spinner-bg').classList.remove('hidden')
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://127.0.0.1:5000/api/time-filter/KPI-Summary');
@@ -160,7 +160,7 @@ $(document).ready(function() {
   
     // Apply button click event
     $('#filter-button').click(function() {
-        $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="GXSChurn.png" alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
+        $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="../static/GXSChurn.png"  alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
         document.getElementById('spinner-bg').classList.remove('hidden')
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://127.0.0.1:5000/api/time-filter/KPI-Summary');

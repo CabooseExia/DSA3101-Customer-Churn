@@ -43,7 +43,7 @@ selected_columns = [
     "FeatureSupportFrequency",
     "IncomeSource",
     "Tenure",
-    "CustomerSatisfaction",
+    "BrandSatisfaction",
     "Happiness",
     "MaritalStatus",
     "TransactionFreq",
@@ -115,16 +115,18 @@ def updateData(data):
     global hist_churn_percentage, proj_churn_percentage, persona_segment_top_3, persona_segment_full, hist_churn_graph, loss_impact_graph
 
     hist_churn_percentage = str(round(statistics.fmean(hist_churn)*100,1)) + "%" if hist_churn else str(round(0/1,1))+"%"
-    proj_churn_percentage = str(round(statistics.fmean(hist_churn)*100,1)) + "%" if proj_churn else str(round(0/1,1))+"%"
+    proj_churn_percentage = str(round(statistics.fmean(proj_churn)*100,2)) + "%" if proj_churn else str(round(0/1,1))+"%"
 
     persona_segment_full = []
     personaFreq = collections.Counter(persona)
+    print(personaFreq)
+    print("Total is "+ str(personaFreq.total()))
     for key,value in personaFreq.items():
-        pctg = round(value/personaFreq.total(),1)
+        pctg = value/personaFreq.total()
         persona_segment_full.append({"persona":key, "pctg":pctg})
     persona_segment_full.sort(key= lambda x: x['pctg'],reverse=True)
     for each in persona_segment_full:
-        each['pctg'] = str(each['pctg']*100) +"%"
+        each['pctg'] = str(round(each['pctg']*100,1)) +"%"
     persona_segment_top_3 = persona_segment_full[:3]
 
     final_dates = []
@@ -303,7 +305,7 @@ def get_results_CPA():
                 "Age", "Tenure", "Balance", "NumOfProducts", "EstimatedSalary",
                 "LoanAmt", "TransactionFreq", "TransactionAmt",
                 "MonthsInactive", "Dependents", "MarketingOffersAcceptance",
-                "CustomerSatisfaction", "Retention"
+                "BrandSatisfaction", "Retention"
             ]:
                 entry_value = entry.get(filter_key, None)
                 if entry_value is None:
@@ -380,7 +382,7 @@ def handle_filters_CPA():
     "Dependents",
     "MarketingOffersAcceptance",
     "PaymentMethod",
-    "CustomerSatisfaction",
+    "BrandSatisfaction",
     "IncomeSource",
     "Retention",
     ]
