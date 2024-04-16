@@ -67,6 +67,7 @@ selected_columns = [
     "Gender",
     "Balance",
     "LoanAmt",
+    "SocialInfluencer",
     "EstimatedSalary",
     "average_Churned_proba"
 ]
