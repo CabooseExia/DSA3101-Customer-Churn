@@ -50,7 +50,7 @@ window.onclick = function(event) {
 };
 
 async function fetchData(personas) {
-    let baseUrl = 'http://127.0.0.1:5000/api/data';
+    let baseUrl = 'http://127.0.0.1:5000/api/data/Lifecycle-Explorer';
     if (personas.length) {
         // Join multiple persona values with '&' to construct the query string properly
         const queryParams = personas.map(p => `persona=${encodeURIComponent(p)}`).join('&');
@@ -68,7 +68,7 @@ async function fetchData(personas) {
 }
 
 async function plotData(personas) {
-    let baseUrl = 'http://127.0.0.1:5000/api/data';
+    let baseUrl = 'http://127.0.0.1:5000/api/data/Lifecycle-Explorer';
     if (personas.length) {
         const queryParams = personas.map(p => `persona=${encodeURIComponent(p)}`).join('&');
         baseUrl += `?${queryParams}`;
