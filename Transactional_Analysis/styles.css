@@ -34,9 +34,11 @@ body {
     color: #000000 !important;
 }
   
-/* .chart-title { 
+.chart-title { 
     text-align: center; 
-} */
+    margin-top: 20px;  /* Adds some space above the title, adjust as needed */
+    margin-bottom: 20px;  /* Adds some space below the title, adjust as needed */
+}
 
 .main-content {
     display: flex;
@@ -62,7 +64,8 @@ body {
 
 .filter { 
     margin-bottom: 20px; 
-    margin-left: 50px; 
+    margin-left: 20px;
+    margin-right: 20px;
     margin-top: 20px;
 }
 
