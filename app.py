@@ -148,6 +148,74 @@ def updateData(data):
     account_df = pd.DataFrame(data={'Date':np.array(list(acc_dict.keys()))[index2nd],'Total Loss':np.array(list(acc_dict.values()))[index2nd]})
     fig = px.line(churn_df, x="Date", y="Churn Occurrences", title="Historical Churn Occurrences", color_discrete_sequence=["#9f0606"])
     fig2 = px.line(account_df, x="Date",y="Total Loss", title="Raw Loss Impact", color_discrete_sequence=["#9f0606"])
+    fig.update_layout(title = {'y':0.9,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            "text": "Historical Churn Occurrences",
+            "font":{
+                "family": 'Inter',
+                "size": 20,
+                "color":"#808080"
+            }
+        },
+        xaxis= {
+            "title": {
+                "text": '<b> Date </b>',
+                "font": {
+                    "family": 'Inter',
+                    "size" : 15
+                }
+            },
+            "ticksuffix":"   "
+        },
+        yaxis = {
+            "title": {
+                "text" : '<b> # of Churn Occurrences </b>',
+                "font" :{
+                    "family" : 'Inter',
+                    "size" : 15
+                }
+            },
+            "ticksuffix":"   "
+        },
+        plot_bgcolor = "rgba( 255 , 255 , 255 , 0.000 )",
+        # paper_bgcolor ="rgba( 255 , 255 , 255 , 0.000 )"
+    )
+    fig2.update_layout(title = {'y':0.9,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            "text": "Raw Loss Impact",
+            "font":{
+                "family": 'Inter',
+                "size": 20,
+                "color":"#808080"
+            }
+        },
+        xaxis= {
+            "title": {
+                "text": '<b> Date </b>',
+                "font": {
+                    "family": 'Inter',
+                    "size" : 15
+                }
+            },
+            "ticksuffix":"   "
+        },
+        yaxis = {
+            "title": {
+                "text" : '<b> Net Loss </b>',
+                "font" :{
+                    "family" : 'Inter',
+                    "size" : 15
+                }
+            },
+            "ticksuffix":"   "
+        },
+        plot_bgcolor = "rgba( 255 , 255 , 255 , 0.000 )",
+        # paper_bgcolor ="rgba( 255 , 255 , 255 , 0.000 )"
+    )
 
     loss_impact_graph = pio.to_json(fig2)
     hist_churn_graph = pio.to_json(fig)
