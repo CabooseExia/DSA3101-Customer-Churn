@@ -25,7 +25,7 @@ function updateDashboardData() {
                 const sumOfADP = adpValues.reduce((total, adp) => total + adp, 0);
                 document.querySelector('.top-panels .panel:nth-child(5) p').innerText = Math.round((sumOfADP / customerData.length) * 100) + " %";
 
-                const cssValues = customerData.map(customer => customer["CustomerSatisfaction"]);
+                const cssValues = customerData.map(customer => customer["BrandSatisfaction"]);
                 const sumOfCSS = cssValues.reduce((total, css) => total + css, 0);
                 document.querySelector('.top-panels .panel:nth-child(6) p').innerText = Math.floor(sumOfCSS / customerData.length) + " out of 5";
 
