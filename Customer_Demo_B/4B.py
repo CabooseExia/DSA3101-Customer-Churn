@@ -4,7 +4,7 @@ from flask import jsonify
 import pandas as pd
 
 # Filter out customers who have churned
-df = pd.read_parquet("./Customer_Demo_B/Predicted_Data.parquet")
+df = pd.read_parquet("./Predicted_Data.parquet")
 df = df[df['ChurnDate'].isna()]
 global_data = df.to_dict(orient='records') # Store data from backend team
 
