@@ -51,9 +51,10 @@ except FileNotFoundError:
 # In[4]:
 
 
-# Read in the train and test data
+# Read in the train and test data which are the original customer base split into train and test
 train_data = pd.read_csv('train.csv')
 test_data = pd.read_csv('test.csv')
+
 input_features = [column for column in train_data.columns if column not in features_dropped]
 
 
@@ -64,6 +65,9 @@ input_features = [column for column in train_data.columns if column not in featu
 label_encoder = LabelEncoder()
 train_data_encoded = train_data.copy()
 test_data_encoded = test_data.copy()
+
+train_data_encoded['MonthsInactive'] = train_data_encoded['MonthsInactive'].fillna(0)
+test_data_encoded['MonthsInactive'] = test_data_encoded['MonthsInactive'].fillna(0)
 
 for column in train_data_encoded.columns:
     if train_data_encoded[column].dtype == 'object':
@@ -85,18 +89,11 @@ test_lgr = test_data_encoded.copy()
 # Scale dataset (except for the labels) for logistic regression
 scaler = StandardScaler()
 
-train_lgr_features = train_lgr[[column for column in train_lgr.columns if column not in ['CurrLifecycle_Active', 'CurrLifecycle_Reactivated', 'CurrLifecycle_Dormant', 'CurrLifecycle_Churned']]]
-train_lgr_labels = train_lgr[[column for column in train_lgr.columns if column in ['CurrLifecycle_Active', 'CurrLifecycle_Reactivated', 'CurrLifecycle_Dormant', 'CurrLifecycle_Churned']]]
-
+train_lgr_features = train_lgr[input_features]
 train_lgr_features = pd.DataFrame(scaler.fit_transform(train_lgr_features), columns = train_lgr_features.columns)
-train_lgr = pd.concat([train_lgr_features, train_lgr_labels], axis = 1)
 
-
-test_lgr_features = test_lgr[[column for column in test_lgr.columns if column not in ['CurrLifecycle_Active', 'CurrLifecycle_Reactivated', 'CurrLifecycle_Dormant', 'CurrLifecycle_Churned']]]
-test_lgr_labels = test_lgr[[column for column in test_lgr.columns if column in ['CurrLifecycle_Active', 'CurrLifecycle_Reactivated', 'CurrLifecycle_Dormant', 'CurrLifecycle_Churned']]]
-
+test_lgr_features = test_lgr[input_features]
 test_lgr_features = pd.DataFrame(scaler.fit_transform(test_lgr_features), columns = test_lgr_features.columns)
-test_lgr = pd.concat([test_lgr_features, test_lgr_labels], axis = 1)
 
 
 # In[8]:
@@ -113,13 +110,18 @@ rf = models[2]
 
 
 y_train_all_lgr = [train_lgr['CurrLifecycle_Active'], train_lgr['CurrLifecycle_Reactivated'], train_lgr['CurrLifecycle_Dormant'], train_lgr['CurrLifecycle_Churned']]
-y_test_all_lgr = [test_lgr['CurrLifecycle_Active'], test_lgr['CurrLifecycle_Reactivated'], test_lgr['CurrLifecycle_Dormant'], test_lgr['CurrLifecycle_Churned']]
 
 y_train_all = [train_data_encoded['CurrLifecycle_Active'], train_data_encoded['CurrLifecycle_Reactivated'], train_data_encoded['CurrLifecycle_Dormant'], train_data_encoded['CurrLifecycle_Churned']]
-y_test_all = [test_data_encoded['CurrLifecycle_Active'], test_data_encoded['CurrLifecycle_Reactivated'], test_data_encoded['CurrLifecycle_Dormant'], test_data_encoded['CurrLifecycle_Churned']]
 
 
 # In[10]:
+
+
+from imblearn.over_sampling import SMOTE
+smote = SMOTE(random_state=42)
+
+
+# In[11]:
 
 
 lgr_models_list = []
@@ -128,21 +130,23 @@ rf_models_list = []
 for i in range(4):
     # Train the lgr models and store in the list
     lgr_model = LogisticRegression(**lgr[i])
-    lgr_model.fit(train_lgr[input_features], y_train_all_lgr[i])
+    X_train_resampled, y_train_resampled = smote.fit_resample(train_lgr_features, y_train_all_lgr[i])
+    lgr_model.fit(X_train_resampled, y_train_resampled)
     lgr_models_list.append(lgr_model)
     
     # Train the xgb models and store in the list
     xgb_model = XGB.XGBClassifier(**xgb[i])
-    xgb_model.fit(train_data_encoded[input_features], y_train_all[i])
+    X_train_resampled, y_train_resampled = smote.fit_resample(train_data_encoded[input_features], y_train_all[i])
+    xgb_model.fit(X_train_resampled, y_train_resampled)
     xgb_models_list.append(xgb_model)
     
     # Train the rf models and store in the list
     rf_model = RandomForestClassifier(**rf[i])
-    rf_model.fit(train_data_encoded[input_features], y_train_all[i])
+    rf_model.fit(X_train_resampled, y_train_resampled)
     rf_models_list.append(rf_model)
 
 
-# In[11]:
+# In[12]:
 
 
 # Define the function to generate predictions from the trained models
@@ -205,13 +209,11 @@ def prediction(lgr, xgb, rf, data, features):
     return data
 
 
-# In[12]:
+# In[13]:
 
 
 # Filter the existing active customers from the train_data
-train_drop_index = train_data_encoded[(train_data_encoded['CurrLifecycle_Dormant'] == 1) | (train_data_encoded['CurrLifecycle_Churned'] == 1)].index
-train_active = train_data_encoded.drop(train_drop_index)
-train_data = train_data.drop(train_drop_index)
+train_active = train_data_encoded[train_data_encoded['CurrLifecycle_Churned'] != 1].copy()
 
 # Returns the df with predictions for train_active (This train data only consists of existing active customers)
 # Note: train_active_prediction is the encoded dataframe
@@ -223,7 +225,7 @@ train_active_prediction = prediction(lgr_models_list, xgb_models_list, rf_models
 test_prediction = prediction(lgr_models_list, xgb_models_list, rf_models_list, test_data_encoded, input_features)
 
 
-# In[13]:
+# In[14]:
 
 
 # Add the probabilities and predicted Lifecycle columns to the non-encoded dataframe
@@ -231,7 +233,7 @@ train_data = pd.concat([train_data, train_active_prediction.loc[:, 'average_Acti
 test_data = pd.concat([test_data, test_prediction.loc[:, 'average_Active_proba':'average_Churned_proba'], test_prediction['PredictedLifecycle']], axis=1)
 
 
-# In[14]:
+# In[15]:
 
 
 # Encode the Predicted Lifecycles
@@ -246,74 +248,102 @@ train_data['PredLifecycle_Dormant'] = (train_data['PredictedLifecycle'] == 'Dorm
 train_data['PredLifecycle_Churned'] = (train_data['PredictedLifecycle'] == 'Churned').astype(int)
 
 
-# In[15]:
+# In[28]:
 
 
-# Generate classification report using the test predictions
-report_table = classification_report(test_data['CurrLifecycle_Churned'], test_data['PredLifecycle_Churned']) 
-report_dict = classification_report(test_data['CurrLifecycle_Churned'], test_data['PredLifecycle_Churned'], output_dict=True) 
-
-
-# In[16]:
-
-
-print(report_table)
-
-
-# In[31]:
-
-
-print(report_dict)
-
-
-# In[17]:
-
-
-# Filter out the existing active customers from the test data
-test_drop_index = test_data[(test_data['CurrLifecycle_Dormant'] == 1) | (test_data['CurrLifecycle_Churned'] == 1)].index
-test_active_prediction = test_data.drop(test_drop_index) 
-
-
-# In[18]:
-
-
-# Concat the train_data and test_active_prediction data
-predicted_data = pd.concat([train_data, test_active_prediction], ignore_index=True)   
-
-
-# In[19]:
-
-
-predicted_data.head()
-
-
-# In[20]:
-
-
-predicted_data.to_csv("Predicted_Data.csv")
+# Generate classification report for Active/Non-Active
+report_table_Active = classification_report(test_data['CurrLifecycle_Active'], test_data['PredLifecycle_Active'])
+report_table_Active_dict = classification_report(test_data['CurrLifecycle_Active'], test_data['PredLifecycle_Active'], output_dict=True)
+print(report_table_Active)
 
 
 # In[30]:
 
 
-predicted_data.head().to_dict(orient='records')
+# Generate classification report for Reactivated/Non-Reactivated
+report_table_Reactivated = classification_report(test_data['CurrLifecycle_Reactivated'], test_data['PredLifecycle_Reactivated'])
+report_table_Reactivated_dict = classification_report(test_data['CurrLifecycle_Reactivated'], test_data['PredLifecycle_Reactivated'], output_dict=True)
+print(report_table_Reactivated)
+
+
+# In[31]:
+
+
+# Generate classification report for Dormant/Non-Dormant
+report_table_Dormant = classification_report(test_data['CurrLifecycle_Dormant'], test_data['PredLifecycle_Dormant'], zero_division=0)
+report_table_Dormant_dict = classification_report(test_data['CurrLifecycle_Dormant'], test_data['PredLifecycle_Dormant'], zero_division=0, output_dict=True)
+print(report_table_Dormant)
+
+
+# In[32]:
+
+
+# Generate classification report for Churned/Non-Churned
+report_table_Churned = classification_report(test_data['CurrLifecycle_Churned'], test_data['PredLifecycle_Churned'])
+report_table_Churned_dict = classification_report(test_data['CurrLifecycle_Churned'], test_data['PredLifecycle_Churned'], output_dict=True)
+print(report_table_Churned)
+
+
+# In[52]:
+
+
+# Calculate average of the reports
+report_lst = [report_table_Active_dict, report_table_Reactivated_dict, report_table_Dormant_dict, report_table_Churned_dict]
+report_dict = {'0': {'precision': [], 'recall': [], 'f1-score': [], 'support': []}, 
+              '1': {'precision': [], 'recall': [], 'f1-score': [], 'support': []},
+              'accuracy': [],
+              'macro avg': {'precision': [], 'recall': [], 'f1-score': [], 'support': []},
+              'weighted avg': {'precision': [], 'recall': [], 'f1-score': [], 'support': []}}
+
+for report in report_lst:
+    for key1, pair1 in report.items():
+        if key1=='accuracy':
+            report_dict['accuracy'].append(pair1)
+        else:
+            for key2, pair2 in pair1.items():
+                report_dict[key1][key2].append(pair2)
+                
+for report in report_lst:
+    for key1, pair1 in report.items():
+        if key1=='accuracy':
+            report_dict[key1] = round(np.mean(report_dict[key1]), 2)
+        else:
+            for key2, pair2 in pair1.items():
+                report_dict[key1][key2] = round(np.mean(report_dict[key1][key2]), 2)
+
+
+# In[53]:
+
+
+report_dict
+
+
+# In[54]:
+
+
+# Save classification report as json
+json_data = json.dumps(report_dict)
+
+with open("Report_Dict.json", "w") as json_file:
+    json_file.write(json_data)
 
 
 # In[22]:
 
 
-# Flask API to send report and predicted data to frontend
-app = Flask(__name__)
-CORS(app)
+# Concat the train_data and test_data data
+predicted_data = pd.concat([train_data, test_data], ignore_index=True)   
 
-@app.route('/api/model')
-def get_model():
-    return jsonify(report_dict)
 
-@app.route('/api/data')
-def get_data():
-    return jsonify(predicted_data.to_dict(orient='records'))
+# In[23]:
 
-if __name__ == 'main':
-    app.run(debug=True)
+
+predicted_data.head()
+
+
+# In[24]:
+
+
+# Save it as csv for the API file to read
+predicted_data.to_csv("Predicted_Data.csv")
 
