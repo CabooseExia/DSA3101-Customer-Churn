@@ -39,7 +39,8 @@ function updateDashboardData() {
                 plotTransactionFrequencyAmountChart(customerData);
                 plotLoanAmountAndSalaryChart(customerData);
                 plotServiceSupportChart(customerData);
-                plotRetentionByMonthsInactiveChart(customerData);
+                plotRetentionChart(customerData);
+                plotMonthsInactiveChart(customerData);
                 plotChangeInBehaviourChart(customerData);
                 plotFeatureSupportChart(customerData);
                 plotDependentsCountChart(customerData);
@@ -466,53 +467,62 @@ function plotTransactionFrequencyAmountChart(customerData) {
 
 
 
-function plotRetentionByMonthsInactiveChart(customerData) {
-    const data = [];
-    const monthsRetentionMap = new Map();
+function plotMonthsInactiveChart(customerData) {
+    const monthsInactive = customerData.map(customer => customer.MonthsInactive);
 
-    customerData.forEach(entry => {
-        const monthsInactive = entry["MonthsInactive"];
-        const retentionRate = entry["Retention"];
-
-        if (!monthsRetentionMap.has(monthsInactive)) {
-            monthsRetentionMap.set(monthsInactive, []);
+    const trace = {
+        x: monthsInactive,
+        type: 'histogram',
+        marker: {
+            color: GXS_colors.eggplant100
         }
-
-        monthsRetentionMap.get(monthsInactive).push(retentionRate);
-    });
-
-    const colors = [GXS_colors.black100];
-
-    const traces = [];
-    for (const [monthsInactive, retentionRates] of monthsRetentionMap.entries()) {
-        traces.push({
-            type: 'violin',
-            x0: monthsInactive,
-            y: retentionRates,
-            box: { visible: true },
-            meanline: { visible: true },
-            line: { color: colors[monthsInactive % colors.length] }, 
-            side: 'positive',
-            spanmode: 'hard',
-            name: `Months Inactive: ${monthsInactive}`
-        });
-    }
+    };
 
     const layout = {
-        title: 'Retention Rates by Months Inactive',
+        title: 'Distribution of Months Inactive',
         xaxis: {
-            title: 'Months Inactive',
-            range: [0, 13]
+            title: 'Months Inactive'
         },
         yaxis: {
-            title: 'Retention Rate'
+            title: 'Frequency'
         },
-        showlegend: false,
         plot_bgcolor: GXS_colors.pearl100, 
         paper_bgcolor: GXS_colors.pearl100,
     };
 
-    Plotly.newPlot('retention-months-inactive-chart', traces, layout);
+    Plotly.newPlot('months-inactive-chart', [trace], layout);
+}
+
+
+
+
+function plotRetentionChart(customerData) {
+    const retention = customerData.map(customer => customer.Retention);
+
+    const trace = {
+        y: retention,
+        type: 'violin',
+        box: {
+            visible: true
+        },
+        meanline: {
+            visible: true
+        },
+        line: {
+            color: GXS_colors.mint500
+        }
+    };
+
+    const layout = {
+        title: 'Distribution of Retention Effort Success Rate',
+        yaxis: {
+            title: 'Retention'
+        },
+        plot_bgcolor: GXS_colors.pearl100, 
+        paper_bgcolor: GXS_colors.pearl100,
+    };
+
+    Plotly.newPlot('retention-chart', [trace], layout);
 }
 
 
