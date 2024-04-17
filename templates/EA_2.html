@@ -121,6 +121,37 @@
     <script src="{{ url_for('static', filename='EA.js') }}"></script>
 
     <script>
+        const GXS_colors = {
+            eggplant500: '#0c0120',
+            neon100: '#af89f4',
+            pearl500: '#fafafa',
+            eggplant100: '#453b59',
+            black100: '#878787',
+            neon500: '#771fff',
+            black300: '#2b2b2b',
+            thunder500: '#ffd500',
+            gum500: '#f8326d',
+            mint500: '#75f9aa',
+            bolt500: '#4cc9f0',
+            candy500: '#ff96d2',
+            mint300: '#a7f8c7',
+            candy300: '#ffabdb',
+            thunder100: '#fff7b1',
+            gum100: '#ffbcc8',
+            neon300: '#8653e3',
+            egg300: '#272036',
+            bolt300: '#98e6ff',
+            thunder300: '#ffe666',
+            candy100: '#ffd5ed',
+            black500: 'black',
+            mint100: '#d4fce4',
+            pearl300: '#eee',
+            bolt100: '#c1f0ff',
+            gum300: '#f66f87',
+            pearl100: '#e9e9e9'
+        };
+
+
         function updateDashboardData() {
             const token_id = "{{ token_id }}";
             fetch(`/api/results/customer-persona-analysis?token_id=${encodeURIComponent(token_id)}`)
@@ -285,13 +316,26 @@
                         };
 
                         Plotly.newPlot('happiness-index-chart', [trace], happinesslayout);
-
+                        
+                        const colorScale = [
+                            [0.0, '#ffffff'],
+                            [0.1, '#fcffa4'],
+                            [0.2, '#f7d32e'],
+                            [0.3, '#fb9c06'],
+                            [0.4, '#ed6925'],
+                            [0.5, '#cf4446'],
+                            [0.6, '#a52c60'],
+                            [0.7, '#781c6d'],
+                            [0.8, '#4a0c6b'],
+                            [0.9, '#1b0c41'],
+                            [1.0, '#000004']
+                        ]; 
                         const traceHeatmap = {
                             x: customerData.map(customer => customer.NPS),
                             y: customerData.map(customer => customer.average_Churned_proba + customer.average_Dormant_proba),
                             z: customerData.map(customer => customer.Count),
                             type: 'histogram2d',
-                            colorscale: 'Bluered',
+                            colorscale: colorScale,
                             xbins: {
                                 start: 0,  
                                 end: 11,   
@@ -307,7 +351,9 @@
                                 'CL: %{y}<br>' +
                                 'Customers: %{z}<extra></extra>',
                             
-                            reversescale: false,
+                            colorbar: {
+                                title: 'Number of Customers',
+                            }
                         };
 
                         const layoutHeatmap = {
@@ -324,9 +370,6 @@
                                 tickmode: 'linear',
                                 dtick: 0.1      
                             },
-                            colorbar: {
-                                title: 'Number of Customers'
-                            }
                         };
 
                         Plotly.newPlot('heatmap-plot', [traceHeatmap], layoutHeatmap);
