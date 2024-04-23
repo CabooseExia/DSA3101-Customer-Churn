@@ -121,8 +121,9 @@ def updateData(data):
 
     persona_segment_full = []
     personaFreq = collections.Counter(persona)
+    total = sum(personaFreq.values())
     for key,value in personaFreq.items():
-        pctg = value/personaFreq.total()
+        pctg = value/total
         persona_segment_full.append({"persona":key, "pctg":pctg})
     persona_segment_full.sort(key= lambda x: x['pctg'],reverse=True)
     for each in persona_segment_full:
@@ -539,4 +540,4 @@ def form_LE():
     return render_template("LE.html")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port =5000, debug=True)
