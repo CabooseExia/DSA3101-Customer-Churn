@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GxSmartChurn Dashboard</title>
+    <!-- Font Inter for the header -->
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'> 
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <!-- CSS styles for the entire page -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='EA.css') }}">
+    <!-- GXSmartChurn Logo -->
+    <link rel="preload" as="image" href="{{ url_for('static', filename='GXSChurn.png') }}">
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    
+    
+    <!-- Plotly.js CDN -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- Header tab -->
+    <header>
+        <nav class="navbar navbar-expand-lg" style="background: rgb(14, 32, 97); padding:1% 1%;">
+            <div class="container-fluid">
+                <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="Churn Image">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+                    <li class="nav-item mx-3"><a href="/" class="nav-link px-4">KPI Summary</a></li>
+                    <li class="nav-item mx-3"><a href="/Lifecycle-Explorer" class="nav-link px-4">Lifecycle Explorer</a></li>
+                    <li class="nav-item mx-3"><a href="/Engagement-Analytics" class="nav-link active px-4">Engagement Analytics</a></li>
+                    <li class="nav-item mx-3"><a href="/Demographics-Hub" class="nav-link px-4">Demographics Hub</a></li>
+                </ul>
+                <button class="btn btn-outline-light side" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                    ≡ </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Persona Descriptions</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="mb-4">
+                            <h5 class="maroon">Savings Savant</h3>
+                            <h7> This group focuses on maximizing interest earnings and minimizing fees, always on the lookout for the best financial deals and no-cost banking.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Digital Dynamos</h3>
+                            <h7> Customers who prioritize innovative banking features, such as mobile banking, online transactions, and advanced ATM technology, to enhance their banking experience.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Trustee Tribe</h3>
+                            <h7> Those who value a personal touch, emphasizing reliable and accessible customer service, whether it’s through face-to-face interactions or dedicated support lines.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Frugal Innovators</h3>
+                            <h7> Clients who seek the right balance between cost-effective banking and access to modern banking technologies, optimizing both their financial and digital experiences.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Cost-Conscious Careseekers</h3>
+                            <h7> Banking customers who look for the combination of low-cost services with high-quality customer support, ensuring value without compromising on assistance.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Premium Patrons</h3>
+                            <h7> The elite customers who expect the latest in banking technology coupled with exceptional service, often opting into exclusive or premium bank offerings.</h5>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="maroon">Triple Advantage Allies</h3>
+                            <h7> The most demanding yet potentially most loyal customers, who expect the best rates, cutting-edge features, and outstanding service, all in one package.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </nav>
+    </header>
+
+    <!-- Spinner -->
+    <div id="spinner-bg" class="spinner-bg">
+        <img src="{{ url_for('static', filename='GXSChurn.png') }}" alt="GxSmartChurn logo">
+        <p>Running...</p>
+        <div id="spinner" class="spinner"></div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <!-- Top Panel Information -->
+        <div class="top-panels">
+            <div class="panel">
+                <h3>Most prominent persona(s)</h3>
+                <p>Feature-Driven</p>
+            </div>
+            <div class="panel">
+                <h3>Average NPS score</h3>
+                <p>0.75</p>
+            </div>
+            <div class="panel">
+                <h3>Happiness Index</h3>
+                <p>0.7</p>
+            </div>
+        </div>
+
+        <!-- Plotly Charts Section -->
+        <div class="plotly-charts">
+            <div class="chart" id="persona-chart"></div>
+            <div class="chart" id="nps-score-chart"></div>
+            <div class="chart" id="happiness-index-chart"></div>
+            <div class="chart" id="heatmap-plot"></div>
+        </div>
+    </section>
+
+    <script src="{{ url_for('static', filename='EA.js') }}"></script>
+
+    <script>
+        const GXS_colors = {
+            eggplant500: '#0c0120',
+            neon100: '#af89f4',
+            pearl500: '#fafafa',
+            eggplant100: '#453b59',
+            black100: '#878787',
+            neon500: '#771fff',
+            black300: '#2b2b2b',
+            thunder500: '#ffd500',
+            gum500: '#f8326d',
+            mint500: '#75f9aa',
+            bolt500: '#4cc9f0',
+            candy500: '#ff96d2',
+            mint300: '#a7f8c7',
+            candy300: '#ffabdb',
+            thunder100: '#fff7b1',
+            gum100: '#ffbcc8',
+            neon300: '#8653e3',
+            egg300: '#272036',
+            bolt300: '#98e6ff',
+            thunder300: '#ffe666',
+            candy100: '#ffd5ed',
+            black500: 'black',
+            mint100: '#d4fce4',
+            pearl300: '#eee',
+            bolt100: '#c1f0ff',
+            gum300: '#f66f87',
+            pearl100: '#e9e9e9'
+        };
+
+
+        function updateDashboardData() {
+            const token_id = "{{ token_id }}";
+            fetch(`/api/results/customer-persona-analysis?token_id=${encodeURIComponent(token_id)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data['error']) {
+                        document.querySelector('.dashboard-section').innerHTML = "<h1 class='result-error'>ERROR: "+data["error"]+"</h1>";
+                    } else {
+                        document.querySelector('.top-panels .panel:nth-child(1) p').innerText = data['Most Prominent Persona'];
+                        document.querySelector('.top-panels .panel:nth-child(2) p').innerText = data['Average NPS Score'];
+                        document.querySelector('.top-panels .panel:nth-child(3) p').innerText = data['Happiness Index'];
+
+                        
+                        const customerData = data['Filtered Data'];
+                        const npsScores = customerData.map(customer => customer.NPS);
+                        let npsCounts = {};
+                        for (let i = 0; i <= 10; i++) {
+                            npsCounts[i] = 0; 
+                        }
+
+
+                        
+                        customerData.forEach(customer => {
+                            const score = customer.NPS;
+                            if (score in npsCounts) {
+                                npsCounts[score] += 1;
+                            }
+                        });
+                        
+                        const dataNPS = [{
+                            x: Object.keys(npsCounts),
+                            y: Object.values(npsCounts),
+                            type: 'bar',
+                            marker: {
+                                color: 'rgba(76, 0, 153, 0.7)',
+                                line: {
+                                    color: 'rgba(76, 0, 153, 1.0)',
+                                    width: 2
+                                }
+                            }
+                        }];
+                        const layoutNPS = {
+                            title: 'Customer NPS Scores Distribution',
+                            autosize: true,
+                            margin: { l: 50, r: 50, b: 100, t: 50, pad: 4 },
+                            xaxis: {
+                                title: 'NPS Score',
+                                tickmode: 'linear', 
+                                dtick: 1, 
+                                tickangle: -45,
+                                automargin: true
+                            },
+                            yaxis: {
+                                title: 'Customer Count'
+                            },
+                            legend: {y: -1, x: 1, orientation: 'h'}
+                        };
+                        Plotly.newPlot('nps-score-chart', dataNPS, layoutNPS);
+
+
+                        let personaCounts = {};
+                        let churnScores = {};
+                        customerData.forEach(customer => {
+                            let persona = customer.CombinedPersonas;
+                            let churnLikelihood = customer.average_Churned_proba + customer.average_Dormant_proba; 
+
+                            if (personaCounts[persona]) {
+                                personaCounts[persona] += 1;
+                                churnScores[persona] += churnLikelihood;
+                            } else {
+                                personaCounts[persona] = 1;
+                                churnScores[persona] = churnLikelihood;
+                            }
+                        });
+
+                        Object.keys(churnScores).forEach(CombinedPersonas => {
+                        churnScores[CombinedPersonas] = churnScores[CombinedPersonas] / personaCounts[CombinedPersonas];
+                        });
+
+                        const sortedPersonas = Object.keys(personaCounts).sort((a, b) => personaCounts[b] - personaCounts[a]);
+
+
+                        let barTrace = {
+                            x: sortedPersonas,
+                            y: sortedPersonas.map(persona => personaCounts[persona]),
+                            type: 'bar',
+                            name: 'Customer Count',
+                            marker: {
+                                color: '660066'
+                            }
+                        };
+
+                        let lineTrace = {
+                            x: sortedPersonas,
+                            y: sortedPersonas.map(persona => churnScores[persona]),
+                            type: 'scatter',
+                            mode: 'lines+markers',
+                            name: 'Churn Likelihood',
+                            yaxis: 'y2',
+                            line: {
+                                color: '9933FF'
+                            }
+                        };
+
+                        let layoutPersona = {
+                            title: 'Customer Counts and Likelihood of Churn by Persona',
+                            xaxis: { title: 'Persona', automargin : true},
+                            yaxis: { title: 'Customer Count', automargin : true },
+                            yaxis2: {
+                                title: 'Churn Likelihood',
+                                overlaying: 'y', 
+                                side: 'right', 
+                                automargin: true
+                            },
+                            barmode: 'group',
+                            autosize: true,
+                            margin: { l: 50, r: 50, b: 50, t: 100, pad: 4 },
+                            legend: {
+                                orientation: 'h',
+                                x: 0.5,
+                                xanchor: 'center',
+                                y: -0.5,
+                                yanchor: 'top'
+                            },
+                            font: { size: 12 }
+                        };
+                        Plotly.newPlot('persona-chart', [barTrace, lineTrace], layoutPersona);
+
+
+
+                        const happinessScore = customerData.map(customer => customer.Happiness);
+                        let happinessCount = { 'Happy': 0, 'Not Happy': 0 };
+                        happinessScore.forEach(score => {
+                        if (score) {
+                            happinessCount['Happy'] += 1;
+                        } else {
+                            happinessCount['Not Happy'] += 1;
+                        }
+                    });
+                        var trace = {
+                            labels: Object.keys(happinessCount),
+                            values: Object.values(happinessCount),
+                            type: 'pie',  
+                            marker: {
+                                colors: ['771fff', 'f66f87'] 
+                            },
+                            textinfo: "label+percent",
+                            insidetextorientation: "radial"
+                        };
+                        var happinesslayout = {
+                            title: 'Distribution of Customer Happiness',
+                            autosize: true,
+                            margin: { l: 30, r: 30, b: 30, t: 100, pad: 4 },
+                            legend: {
+                            orientation: 'h',
+                            x: 0.5,
+                            xanchor: 'center',
+                            y: -0.1,
+                            yanchor: 'top'
+                        },
+                        font: { size: 12 }
+                        };
+
+                        Plotly.newPlot('happiness-index-chart', [trace], happinesslayout);
+                        
+                        const colorScale = [
+                            [0.0, '#ffffff'],
+                            [0.1, '#fcffa4'],
+                            [0.2, '#f7d32e'],
+                            [0.3, '#fb9c06'],
+                            [0.4, '#ed6925'],
+                            [0.5, '#cf4446'],
+                            [0.6, '#a52c60'],
+                            [0.7, '#781c6d'],
+                            [0.8, '#4a0c6b'],
+                            [0.9, '#1b0c41'],
+                            [1.0, '#000004']
+                        ]; 
+                        const traceHeatmap = {
+                            x: customerData.map(customer => customer.NPS),
+                            y: customerData.map(customer => customer.average_Churned_proba + customer.average_Dormant_proba),
+                            z: customerData.map(customer => customer.Count),
+                            type: 'histogram2d',
+                            colorscale: colorScale,
+                            xbins: {
+                                start: 0,  
+                                end: 11,   
+                                size: 1    
+                            },
+                            ybins: {
+                                start: 0,  
+                                end: 1,   
+                                size: 0.2  
+                            },
+                            hovertemplate: 
+                                'NPS: %{x}<br>' +
+                                'CL: %{y}<br>' +
+                                'Customers: %{z}<extra></extra>',
+                            
+                            colorbar: {
+                                title: 'Number of Customers',
+                            }
+                        };
+
+                        const layoutHeatmap = {
+                            title: 'Density of NPS vs. Churn Likelihood',
+                            xaxis: {
+                                title: 'Net Promoter Score (NPS)',
+                                range: [0, 11], 
+                                tickmode: 'linear',
+                                dtick: 1,       
+                            },
+                            yaxis: {
+                                title: 'Churn Likelihood',
+                                range: [0, 1],  
+                                tickmode: 'linear',
+                                dtick: 0.1      
+                            },
+                        };
+
+                        Plotly.newPlot('heatmap-plot', [traceHeatmap], layoutHeatmap);
+                    }
+
+                    document.getElementById("spinner-bg").style.opacity = "0";
+
+                    setTimeout(() => {
+                        document.getElementById("spinner-bg").remove();
+                    }, 500);
+                })
+                .catch(error => console.error('Error fetching dashboard data:', error));
+        }
+        window.onload = function() {
+            updateDashboardData();
+        };
+    </script>
+</body>
+</html>
