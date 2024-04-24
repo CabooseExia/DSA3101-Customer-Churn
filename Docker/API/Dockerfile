@@ -9,4 +9,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 EXPOSE 5500
 
-CMD ["python", "Backendoutput.py"]
+CMD ["python", "BackendOutput.py"]
