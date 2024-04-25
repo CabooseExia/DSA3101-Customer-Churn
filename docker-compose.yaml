@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: /Docker/Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000" #Backend API Port
+      - "5500:5500" #Frontend Port
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+    command: ["flask", "run","--host=0.0.0.0"]
+
+  api:
+    build:
+      context: /Docker/API
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000" #Backend API Port
+      - "5501:5500" #Frontend Port
+    #environment:
+      #- FLASK_APP=app.py
+      #- FLASK_ENV=development
+    command: ["python", "BackendOutput.py"]
+
+  models:
+    build:
+      context: /Docker/Models
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5000" 
+      - "5502:5500" #Frontend Port
+    command: ["python", "Customer Churn Prediction.py"]
