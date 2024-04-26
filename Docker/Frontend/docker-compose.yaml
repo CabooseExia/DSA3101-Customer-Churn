@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      - "5000:5000" #Backend API Port
+      - "5003:5003" #Backend API Port
       - "5500:5500" #Frontend Port
     environment:
       - FLASK_APP=app.py

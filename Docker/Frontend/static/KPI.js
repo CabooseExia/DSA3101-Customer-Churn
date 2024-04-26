@@ -111,12 +111,12 @@ $(document).ready(function() {
         $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="../static/GXSChurn.png"  alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
         document.getElementById('spinner-bg').classList.remove('hidden')
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://127.0.0.1:5000/api/time-filter/KPI-Summary');
+        xhr.open('POST', 'http://127.0.0.1:5003/api/time-filter/KPI-Summary');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 console.log(xhr.responseText)
-                $.getJSON('http://127.0.0.1:5000/api/data/KPI-Summary', function(data) {
+                $.getJSON('http://127.0.0.1:5003/api/data/KPI-Summary', function(data) {
                     process(data);
                     document.getElementById("spinner-bg").style.opacity = "0";
                     setTimeout(() => {
@@ -137,12 +137,12 @@ $(document).ready(function() {
         $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="../static/GXSChurn.png"  alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
         document.getElementById('spinner-bg').classList.remove('hidden')
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://127.0.0.1:5000/api/time-filter/KPI-Summary');
+        xhr.open('POST', 'http://127.0.0.1:5003/api/time-filter/KPI-Summary');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 console.log(xhr.responseText)
-                $.getJSON('http://127.0.0.1:5000/api/data/KPI-Summary', function(data) {
+                $.getJSON('http://127.0.0.1:5003/api/data/KPI-Summary', function(data) {
                     process(data);
                     document.getElementById("spinner-bg").style.opacity = "0";
                     setTimeout(() => {
@@ -163,12 +163,12 @@ $(document).ready(function() {
         $('body').append('<div id="spinner-bg" class="spinner-bg"><img src="../static/GXSChurn.png"  alt="GxSmartChurn logo"><p>Running...</p><div id="spinner" class="spinner"></div></div>');
         document.getElementById('spinner-bg').classList.remove('hidden')
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://127.0.0.1:5000/api/time-filter/KPI-Summary');
+        xhr.open('POST', 'http://127.0.0.1:5003/api/time-filter/KPI-Summary');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
                 console.log(xhr.responseText)
-                $.getJSON('http://127.0.0.1:5000/api/data/KPI-Summary', function(data) {
+                $.getJSON('http://127.0.0.1:5003/api/data/KPI-Summary', function(data) {
                     process(data);
                     document.getElementById("spinner-bg").style.opacity = "0";
                     setTimeout(() => {
@@ -184,7 +184,7 @@ $(document).ready(function() {
         console.log('Selected date range:', startDate, 'to', endDate);
     });
 
-    $.getJSON('http://127.0.0.1:5000/api/data/KPI-Summary', function(data) {
+    $.getJSON('http://127.0.0.1:5003/api/data/KPI-Summary', function(data) {
         process(data);
         document.getElementById("spinner-bg").style.opacity = "0";
         setTimeout(() => {
@@ -192,7 +192,7 @@ $(document).ready(function() {
             document.getElementById("spinner-bg").remove();
         }, 500);
     })
-    $.getJSON('http://127.0.0.1:5000/api/model', function(data) {
+    $.getJSON('http://127.0.0.1:5003/api/model', function(data) {
         populateTable(data);
     })  
     .fail(function(error) {
