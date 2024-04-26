@@ -7,8 +7,8 @@ In this full-stack development project, we integrate machine learning predictive
 ## Repo Structure
 - Data_Synthesis/
    - data/
-   - DataSynthesis.ipynb
    - NEW_DataSynthesis.ipynb
+   - README.md
 - Docker/
    - API/
    - Frontend/
