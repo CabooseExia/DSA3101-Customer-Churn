@@ -17,8 +17,8 @@ In this full-stack development project, we integrate machine learning predictive
 - README.md
 
 ## To run our product:
+(_Further details on the instructions can be found [here](https://github.com/CabooseExia/DSA3101-Customer-Churn/wiki/4:-Getting-Started)_)
 - Start Docker Daemon
-- Run "docker-compose build" in bash
 - Run "docker-compose up" in bash
 - Access the web through the generated address in Flask App
 
