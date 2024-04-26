@@ -21,7 +21,7 @@ import json
 # In[3]:
 
 
-# For testing of code, remove this afterwards, and add in the line to receive the processed data
+#Fetching the train and test data
 train_data = pd.read_csv('train.csv')
 test_data = pd.read_csv('test.csv')
 
@@ -29,8 +29,8 @@ test_data = pd.read_csv('test.csv')
 # In[ ]:
 
 
+#Checking the proportion of lifecycle
 print("Total =", len(train_data), '\n')
-AR = train_data[(train_data['PrevLifecycle_Reactivated'] == 1) | (train_data['PrevLifecycle_Active'] == 1)]
 
 print("Churned =", len(train_data[train_data['CurrLifecycle_Churned'] == 1]))
 print("Not churn =", len(train_data[train_data['CurrLifecycle_Churned'] == 0]))
@@ -39,9 +39,6 @@ print("Churn percentage =", (len(train_data[train_data['CurrLifecycle_Churned'] 
 print("Active =", len(train_data[train_data['CurrLifecycle_Active'] == 1]))
 print("Not active =", len(train_data[train_data['CurrLifecycle_Active'] == 0]))
 print("Active percentage =", (len(train_data[train_data['CurrLifecycle_Active'] == 1])/len(train_data))*100, '\n')
-
-#print("Dormant from A/R =", len(AR[AR['CurrLifecycle_Dormant'] == 1]))
-#print("Not Dormant from A/R =", len(AR[AR['CurrLifecycle_Dormant'] == 0]))
 
 print("Reactivated =", len(train_data[train_data['CurrLifecycle_Reactivated'] == 1]))
 print("Not Reactivated =", len(train_data[train_data['CurrLifecycle_Reactivated'] == 0]))
@@ -82,24 +79,10 @@ all_train, all_test, strat_train, strat_test = train_test_split(X, strat, test_s
 # In[ ]:
 
 
-#y_train_a, y_train_r, y_train_d, y_train_c = all_train['Active'], all_train['Reactivated'], all_train['Dormant'], all_train['Churned']
-#y_test_a, y_test_r, y_test_d, y_test_c = all_test['Active'], all_test['Reactivated'], all_test['Dormant'], all_test['Churned']
-
 y_train_all = [all_train['Active'], all_train['Reactivated'], all_train['Dormant'], all_train['Churned']]
 y_test_all = [all_test['Active'], all_test['Reactivated'], all_test['Dormant'], all_test['Churned']]
 X_train = all_train.drop(columns=['Active', 'Reactivated', 'Dormant', 'Churned'])
 X_test = all_test.drop(columns=['Active', 'Reactivated', 'Dormant', 'Churned'])
-
-
-# In[ ]:
-
-
-## WONT USE THIS
-y_train_a, y_train_r, y_train_d, y_train_c = y_train, y_train, y_train, y_train
-y_test_a, y_test_r, y_test_d, y_test_c = y_test, y_test, y_test, y_test
-
-y_train_all = [y_train_a, y_train_r, y_train_d, y_train_c]
-y_test_all = [y_test_a, y_test_r, y_test_d, y_test_c]
 
 
 # ### Data processing
@@ -224,49 +207,6 @@ for i in range(4):
     
     test_score_lr = best_model_lr.score(test_lgr[input_features], y_test_all_lgr[i])
     lr_results.append(test_score_lr)
-
-
-# In[ ]:
-
-
-gb_model = GradientBoostingClassifier()
-
-
-# In[ ]:
-
-
-# Hyperparameter Tuning
-gb_param_dist = {
-    'loss': ['log_loss', 'exponential'],
-    'learning_rate': np.arange(0., 2., 0.2).tolist(),
-    'n_estimators': np.arange(100, 301, 100).tolist(),
-    'criterion': ['friedman_mse', 'squared_error'],
-    'min_samples_leaf': np.arange(6,15, 2).tolist(),
-    'max_features': ['sqrt', 'log2', None],
-    'min_samples_split': np.arange(2,15, 2).tolist(),
-    'max_depth': np.arange(3,16, 3).tolist()
-}
-
-#search = BayesSearchCV(
-#    estimator=gb_model,
-#    search_spaces=gb_param_dist,
-#    n_iter=50,
-#    cv=5
-#)
-
-search = RandomizedSearchCV(gb_model, param_distributions=gb_param_dist, n_iter=10, scoring='f1_weighted', cv=5, random_state=42)
-
-
-# Perform optimization
-search.fit(X_train, y_train)
-
-print("Best parameters found: ", search.best_params_)
-
-# Evaluate the best model on the test set
-best_model = search.best_estimator_
-gb_predictions = best_model.predict(X_test)
-test_score = best_model.score(X_test, y_test)
-print("Test score of the best model: ", test_score)
 
 
 # ## XGBoost
@@ -449,7 +389,7 @@ with open("Models.json", "w") as json_file:
 # In[ ]:
 
 
-# Convert the list to JSON
+# Convert the list of dropped features to JSON
 json_data = json.dumps(features_dropped)
 
 # Write JSON data to a file
