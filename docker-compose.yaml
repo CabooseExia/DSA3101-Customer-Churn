@@ -3,19 +3,19 @@ version: '3.8'
 services:
   web:
     build:
-      context: /Docker/Frontend
+      context: Docker/Frontend
       dockerfile: Dockerfile
     ports:
-      - "5000:5000" #Backend API Port
+      - "5003:5003" #Backend API Port
       - "5500:5500" #Frontend Port
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=development
-    command: ["flask", "run","--host=0.0.0.0"]
+    command: ["flask", "run","--host=0.0.0.0","--port=5003"]
 
   api:
     build:
-      context: /Docker/API
+      context: Docker/API
       dockerfile: Dockerfile
     ports:
       - "5001:5000" #Backend API Port
@@ -27,7 +27,7 @@ services:
 
   models:
     build:
-      context: /Docker/Models
+      context: Docker/Models
       dockerfile: Dockerfile
     ports:
       - "5002:5000" 
